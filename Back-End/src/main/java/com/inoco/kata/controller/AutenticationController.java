@@ -25,17 +25,18 @@ public class AutenticationController {
 
 	@PostMapping("/login")
 	public User getAuthentication(@RequestBody final User userAuth) throws Exception {
-//		final User userAuth = new User(user.getFirstName(), user.getLastName(),
-//				);
-//		userAuth.setFirstName(firstName);
-//		userAuth.setLastName(firstName);
-//		userAuth.setPassword(firstName);
 		System.out.println("USER : " + userAuth);
 
 		final Optional<User> optionalUser = this.repository.findAll().stream()
 				.filter(user -> this.checkUser(user, userAuth)).findFirst();
 
-		return optionalUser.isPresent() ? optionalUser.get() : null;
+		if (optionalUser.isPresent()) {
+			final User currentUser = optionalUser.get();
+			currentUser.setPassword(null);
+			return currentUser;
+		}
+
+		return null;
 	}
 
 	private boolean checkUser(final User user, final User userAuth) {
