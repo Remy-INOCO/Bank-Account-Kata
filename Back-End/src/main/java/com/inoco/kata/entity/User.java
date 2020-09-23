@@ -1,16 +1,25 @@
 package com.inoco.kata.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-@Entity
+@Entity(name = "User")
 public class User {
-	private @Id @GeneratedValue Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String firstName;
 	private String lastName;
 	private Integer balance;
 	private String password;
+
+	@OneToMany
+	private List<Transaction> transactionList;
 
 	public User() {
 		super();
@@ -62,6 +71,14 @@ public class User {
 
 	public void setPassword(final String password) {
 		this.password = password;
+	}
+
+	public List<Transaction> getTransactionList() {
+		return this.transactionList;
+	}
+
+	public void setTransactionList(final List<Transaction> transactionList) {
+		this.transactionList = transactionList;
 	}
 
 	@Override
