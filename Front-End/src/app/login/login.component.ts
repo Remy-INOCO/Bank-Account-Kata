@@ -1,5 +1,7 @@
+import { Route } from '@angular/compiler/src/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { User } from '../models/user';
 import { AuthenticationService } from '../services/authentication/authentication.service';
@@ -17,13 +19,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private router: Router) { }
 
   ngOnInit(): void {
+    this.userService.clearStorage();
     this.form = this.formBuilder.group({
-      firstName: ['test', Validators.required],
-      lastName: ['yolo', Validators.required],
-      password: ['sfsrf', Validators.required], 
+      firstName: ['Bilbon', Validators.required],
+      lastName: ['Sacquet', Validators.required],
+      password: ['Test123', Validators.required], 
     });
   }
 
@@ -35,9 +39,21 @@ export class LoginComponent implements OnInit, OnDestroy {
         lastName: formValue.lastName,
         password: formValue.password
       }
-      this.authentication$ = this.authenticationService.login(user).subscribe()
+
+      this.authentication$ = this.authenticationService.login(user).subscribe((user: User) => {
+        if (user) {
+          this.userService.setCurrentUser(user)
+          this.router.navigate(['home'])
+          this.error = ''
+        } else {
+          this.userService.setCurrentUser(null)
+          this.error = 'Les informations saisies ne figure pas dans nos données.'
+          this.form.controls['password'].reset()
+        }
+      })
     }
   }
+
   ngOnDestroy(): void {
     this.authentication$.unsubscribe()
   }
