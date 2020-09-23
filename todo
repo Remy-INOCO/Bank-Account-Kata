@@ -1,15 +1,15 @@
 Base de données :
-	☐ Initialiser le Back-End avec une table avec quelques users (id, nom, prénom, solde, mdp)
-	☐ Initialiser le Back-End avec une table pour l'historique des transactions (id, id_client, opération (dépôt/retrait), libellé, date, montant, solde)
+	✔ Initialiser le Back-End avec une table avec quelques users (id, nom, prénom, solde, mdp) @done(20-09-23 12:12)
+	✔ Initialiser le Back-End avec une table pour l'historique des transactions (id, id_client, opération (dépôt/retrait), libellé, date, montant, solde) @done(20-09-23 23:01)
 
 Back End :
-	☐ Bean User
-	☐ Bean Transaction
+	✔ Bean User @done(20-09-23 12:12)
+	✔ Bean Transaction @done(20-09-23 23:01)
 	Faire un dépôt param (userId, amount) :
 		Boucler si plusieurs (voir si le temps sinon juste un montant)
-			☐ Récupérer l'id de l'utilisateur
-			☐ Ajouter le montant indiqué au solde
-			☐ Ajouter une nouvelle ligne à la table de l'historique des transactions
+			✔ Récupérer l'id de l'utilisateur @done(20-09-23 23:02)
+			✔ Ajouter le montant indiqué au solde @done(20-09-23 23:02)
+			✔ Ajouter une nouvelle ligne à la table de l'historique des transactions @done(20-09-23 23:02)
 	Faire un retrait param (userId, amount) :
 		☐ Récupérer l'id de l'utilisateur
 		☐ Soustraire le montant indiqué au solde
@@ -19,23 +19,23 @@ Back End :
 		☐ Récupérer la date de début et de fin
 		☐ Rechercher dans la table de l'historique des transactions pour récupérer toutes les opérations du client connecté entre les dates définies
 	Historique des opérations param (userId) :
-		☐ Récupérer l'id de l'utilisateur
-		☐ Rechercher dans la table de l'historique des transactions pour récupérer toutes les opérations du client connecté
+		✔ Récupérer l'id de l'utilisateur @done(20-09-23 23:01)
+		✔ Rechercher dans la table de l'historique des transactions pour récupérer toutes les opérations du client connecté @done(20-09-23 23:01)
 	Authentification :
-		☐ Vérifier la table des user pour voir si un client (nom, prénom, mdp) correspond
+		✔ Vérifier la table des user pour voir si un client (nom, prénom, mdp) correspond @done(20-09-23 23:01)
 
 Front End :
-	☐ Interface IUser
-	☐ Interface ITransaction
+	✔ Interface IUser @done(20-09-23 12:12)
+	✔ Interface ITransaction @done(20-09-23 23:02)
 	Page initiale :
-		☐ Interface de connexion
-		☐ Utilisation d'un service pour stocker les informations du client
+		✔ Interface de connexion @done(20-09-23 12:12)
+		✔ Utilisation d'un service pour stocker les informations du client + mise en session @done(20-09-23 23:04)
 	Deuxième page si utilisateur connecté :
 		☐ CanActivate
 		☐ Resolver
 		Nav Bar avec :
 			☐ Logo INOCO
-			☐ Connexion/Nom User - Déconnexion)
+			☐ Nom User - Déconnexion)
 			☐ Faire une dépôt
 			☐ Faire un retrait
 			☐ Relevé de compte
