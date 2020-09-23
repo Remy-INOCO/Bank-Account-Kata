@@ -4,4 +4,5 @@ export interface User {
 	lastName: string
 	balance?: number
 	password: string
+	sessionTime?: number
 }

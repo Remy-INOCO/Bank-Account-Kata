@@ -17,7 +17,7 @@ export class AuthenticationService {
   login(user: User): Observable<User> {
     console.log('Connection');
     
-    return this.http.post(shared.apiUrl + "authentication", user).pipe(
+    return this.http.post(shared.apiUrl + "login", user).pipe(
       tap((user: User) => console.log("User :", user)),
       catchError(this.error.handleError<User>('authentication'))
     )
