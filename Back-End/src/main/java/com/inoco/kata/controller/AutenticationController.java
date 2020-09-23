@@ -1,29 +1,29 @@
 package com.inoco.kata.controller;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inoco.kata.entity.User;
-import com.inoco.kata.entity.UserAuthentication;
 import com.inoco.kata.repository.UserRepository;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-public class UserController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+public class AutenticationController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AutenticationController.class);
 
 	private final UserRepository repository;
 
-	public UserController(final UserRepository repository) {
+	public AutenticationController(final UserRepository repository) {
 		this.repository = repository;
 	}
 
-	@PostMapping("/authentication")
+	@PostMapping("/login")
 	public User getAuthentication(@RequestBody final User userAuth) throws Exception {
 //		final User userAuth = new User(user.getFirstName(), user.getLastName(),
 //				);
@@ -32,11 +32,10 @@ public class UserController {
 //		userAuth.setPassword(firstName);
 		System.out.println("USER : " + userAuth);
 
-		this.repository.findAll().stream().filter(user -> );
+		final Optional<User> optionalUser = this.repository.findAll().stream()
+				.filter(user -> this.checkUser(user, userAuth)).findFirst();
 
-//		return this.repository.findOne(Example.of(userAuth))
-//				.orElseThrow(() -> new Exception("Error during authentication for user " + user));
-
+		return optionalUser.isPresent() ? optionalUser.get() : null;
 	}
 
 	private boolean checkUser(final User user, final User userAuth) {
