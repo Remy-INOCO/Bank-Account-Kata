@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { User } from '../models/user';
+import { IUser } from '../models/user';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { UserService } from '../services/user/user.service';
 
@@ -34,13 +34,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   submit() {
     if (this.form.valid) {
       const formValue = this.form.value
-      const user: User = {
+      const user: IUser = {
         firstName: formValue.firstName,
         lastName: formValue.lastName,
         password: formValue.password
       }
 
-      this.authentication$ = this.authenticationService.login(user).subscribe((user: User) => {
+      this.authentication$ = this.authenticationService.login(user).subscribe((user: IUser) => {
         if (user) {
           this.userService.setCurrentUser(user)
           this.router.navigate(['home'])

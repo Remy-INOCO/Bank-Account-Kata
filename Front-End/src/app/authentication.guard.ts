@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { User } from './models/user';
+import { IUser } from './models/user';
 import { UserService } from './services/user/user.service';
 
 @Injectable({
@@ -27,7 +27,7 @@ export class AuthenticationGuard implements CanActivate {
   }
   
   private validateSession(key, exp) : boolean {
-    const user: User = JSON.parse(localStorage.getItem(key));
+    const user: IUser = JSON.parse(localStorage.getItem(key));
     
     if (user) {
       if (new Date().getTime() - user.sessionTime > exp) {

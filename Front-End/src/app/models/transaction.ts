@@ -1,7 +1,11 @@
-import { OPERATION } from './operation';
+import { Operation } from './operation';
 
-export interface Transaction {
-    id: number
+export interface ITransaction {
+    id?: number
     idUser: number
-    operation: OPERATION
+    operation: Operation
+    wording: string
+    date: Date
+    amount: number
+    balance?: number
 }
