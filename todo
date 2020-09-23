@@ -1,0 +1,65 @@
+Base de données :
+	☐ Initialiser le Back-End avec une table avec quelques users (id, nom, prénom, solde, mdp)
+	☐ Initialiser le Back-End avec une table pour l'historique des transactions (id, id_client, opération (dépôt/retrait), libellé, date, montant, solde)
+
+Back End :
+	☐ Bean User
+	☐ Bean Transaction
+	Faire un dépôt param (userId, amount) :
+		Boucler si plusieurs (voir si le temps sinon juste un montant)
+			☐ Récupérer l'id de l'utilisateur
+			☐ Ajouter le montant indiqué au solde
+			☐ Ajouter une nouvelle ligne à la table de l'historique des transactions
+	Faire un retrait param (userId, amount) :
+		☐ Récupérer l'id de l'utilisateur
+		☐ Soustraire le montant indiqué au solde
+		☐ Ajouter une nouvelle ligne à la table de l'historique des transactions
+	Visualiser le relevé de compte (entre deux dates ou bien le mois) param (userId, startDate, endDate) :
+		☐ Récupérer l'id de l'utilisateur
+		☐ Récupérer la date de début et de fin
+		☐ Rechercher dans la table de l'historique des transactions pour récupérer toutes les opérations du client connecté entre les dates définies
+	Historique des opérations param (userId) :
+		☐ Récupérer l'id de l'utilisateur
+		☐ Rechercher dans la table de l'historique des transactions pour récupérer toutes les opérations du client connecté
+	Authentification :
+		☐ Vérifier la table des user pour voir si un client (nom, prénom, mdp) correspond
+
+Front End :
+	☐ Interface IUser
+	☐ Interface ITransaction
+	Page initiale :
+		☐ Interface de connexion
+		☐ Utilisation d'un service pour stocker les informations du client
+	Deuxième page si utilisateur connecté :
+		☐ CanActivate
+		☐ Resolver
+		Nav Bar avec :
+			☐ Logo INOCO
+			☐ Connexion/Nom User - Déconnexion)
+			☐ Faire une dépôt
+			☐ Faire un retrait
+			☐ Relevé de compte
+			☐ Historique de mes opérations
+
+		Page Dépôt :
+			☐ Visualiser montant actuel
+			Formulaire (voir pour faire plusieurs si le temps ? Pour différents libellé)
+				☐ Libellé
+				☐ Montant
+			☐ CanDeactivate
+			☐ Resolver
+
+		Page Retrait :
+			☐ Visualiser montant actuel
+			Formulaire :
+				☐ Libellé
+				☐ Montant
+			☐ CanDeactivate
+			☐ Resolver
+			
+		Page Relevé de compte :
+			☐ Afficher date, montant et solde
+			☐ Imprimer (print-js)
+
+		Page Historique des opérations :
+			☐ Visualisation sous forme de table
