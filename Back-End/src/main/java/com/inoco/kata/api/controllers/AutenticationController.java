@@ -39,7 +39,6 @@ public class AutenticationController {
 
 		if (optionalUser.isPresent()) {
 			final User currentUser = optionalUser.get();
-			currentUser.setPassword(null);
 			this.userSession.setCurrentUser(currentUser);
 			return this.getUserSession();
 		}

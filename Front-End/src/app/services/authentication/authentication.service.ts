@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators'
+import { map, tap, catchError } from 'rxjs/operators'
 import { IUser } from '../../models/user'
 import { shared } from '../../shared/index'
 import { HttpHandleError } from '../../shared/http-handle-error'
@@ -23,6 +23,10 @@ export class AuthenticationService {
     
     return this.http.post<IUser>(shared.apiUrl + "login", user).pipe(
       tap((user: IUser) => console.log("User :", user)),
+      map((user: IUser) => {
+        user.password = ''
+        return user
+      }),
       catchError(this.error.handleError<IUser>('authentication'))
     )
   }
