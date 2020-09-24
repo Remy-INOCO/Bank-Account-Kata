@@ -1,11 +1,10 @@
-package com.inoco.kata.controller;
+package com.inoco.kata.api.controllers;
 
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,15 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.inoco.kata.entity.Transaction;
-import com.inoco.kata.entity.User;
-import com.inoco.kata.repository.TransactionRepository;
-import com.inoco.kata.repository.UserRepository;
-import com.inoco.kata.session.UserSession;
-import com.inoco.kata.shared.DateUtils;
-import com.inoco.kata.shared.UserUtils;
+import com.inoco.kata.api.model.Transaction;
+import com.inoco.kata.api.model.User;
+import com.inoco.kata.api.repository.TransactionRepository;
+import com.inoco.kata.api.repository.UserRepository;
+import com.inoco.kata.api.session.UserSession;
+import com.inoco.kata.api.shared.DateUtils;
+import com.inoco.kata.api.shared.UserUtils;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/transactions")
 @RestController
 public class TransactionController {

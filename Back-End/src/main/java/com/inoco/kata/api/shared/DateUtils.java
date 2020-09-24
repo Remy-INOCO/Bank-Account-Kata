@@ -1,4 +1,4 @@
-package com.inoco.kata.shared;
+package com.inoco.kata.api.shared;
 
 import java.util.Date;
 

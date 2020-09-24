@@ -1,8 +1,8 @@
-package com.inoco.kata.shared;
+package com.inoco.kata.api.shared;
 
 import java.util.Date;
 
-import com.inoco.kata.entity.Transaction;
+import com.inoco.kata.api.model.Transaction;
 
 public class UserUtils {
 	public static boolean checkUserId(final Transaction transaction, final Long userId) {

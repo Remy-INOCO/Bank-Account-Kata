@@ -1,4 +1,4 @@
-package com.inoco.kata.entity;
+package com.inoco.kata.api.model;
 
 import java.util.List;
 

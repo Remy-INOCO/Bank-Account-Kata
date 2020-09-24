@@ -1,4 +1,4 @@
-package com.inoco.kata.database;
+package com.inoco.kata.api.configuration;
 
 import java.util.Date;
 
@@ -8,11 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.inoco.kata.entity.Operation;
-import com.inoco.kata.entity.Transaction;
-import com.inoco.kata.entity.User;
-import com.inoco.kata.repository.TransactionRepository;
-import com.inoco.kata.repository.UserRepository;
+import com.inoco.kata.api.model.Operation;
+import com.inoco.kata.api.model.Transaction;
+import com.inoco.kata.api.model.User;
+import com.inoco.kata.api.repository.TransactionRepository;
+import com.inoco.kata.api.repository.UserRepository;
 
 @Configuration
 public class LoadDatabase {

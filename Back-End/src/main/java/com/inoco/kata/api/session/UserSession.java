@@ -1,8 +1,8 @@
-package com.inoco.kata.session;
+package com.inoco.kata.api.session;
 
 import org.springframework.stereotype.Component;
 
-import com.inoco.kata.entity.User;
+import com.inoco.kata.api.model.User;
 
 @Component
 public class UserSession {

@@ -1,21 +1,19 @@
-package com.inoco.kata.controller;
+package com.inoco.kata.api.controllers;
 
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.inoco.kata.entity.User;
-import com.inoco.kata.repository.UserRepository;
-import com.inoco.kata.session.UserSession;
+import com.inoco.kata.api.model.User;
+import com.inoco.kata.api.repository.UserRepository;
+import com.inoco.kata.api.session.UserSession;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class AutenticationController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AutenticationController.class);
