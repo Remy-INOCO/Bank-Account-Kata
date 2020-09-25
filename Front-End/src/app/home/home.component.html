@@ -1,1 +1,35 @@
-<p>home works!</p>
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" [ngClass]="{hidden: !(isHandset$ | async)!.matches}" fixedInViewport="false"
+        [attr.role]="isHandset$ ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async)!.matches ? 'over' : 'side'"
+        [opened]="!(isHandset$ | async)!.matches">
+        <mat-nav-list style="margin-left: 5px;">
+            <div class="center">
+                <img src="../assets/logo-inoco.png" alt="Logo INOCO" height="70px">
+            </div>
+            <a mat-list-item href="#">Faire un dépôt</a>
+            <a mat-list-item href="#">Faire un retrait</a>
+            <a mat-list-item href="#">Relevé de compte</a>
+            <a mat-list-item href="#">Historique de mes opérations</a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="full-height">
+        <mat-toolbar color="primary">
+            <div class="full-width margin-top-5">
+                <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+                    *ngIf="(isHandset$ | async)!.matches">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <p class="float-left">
+                    <span>Espace Client</span>
+                </p>
+                <p class="float-right">
+                    <a href="#"><mat-icon>exit_to_app</mat-icon></a>
+                </p>
+                <p class="float-right">User name - </p>
+            </div>
+        </mat-toolbar>
+        <div>
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

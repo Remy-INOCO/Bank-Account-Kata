@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Observable } from 'rxjs/internal/Observable';
+
 import { Operation } from '../models/operation';
 import { ITransaction } from '../models/transaction';
 import { IUser } from '../models/user';
@@ -12,7 +15,11 @@ import { UserService } from '../services/user/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private transactionService: TransactionService, private userService: UserService) { }
+  isHandset$: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.Handset);
+  
+  constructor(private breakpointObserver: BreakpointObserver,
+              private transactionService: TransactionService,
+              private userService: UserService) { }
 
   ngOnInit(): void {
     const currentUser: IUser = this.userService.getCurrentUser()
