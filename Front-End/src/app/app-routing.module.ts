@@ -10,7 +10,7 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
-    path: 'home',
+    path: 'customer-area',
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
     data: { preload: true },
     canActivate: [
@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'customer-area',
     pathMatch: 'full'
   },
   {

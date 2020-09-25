@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.authentication$ = this.authenticationService.login(user).subscribe((user: IUser) => {
         if (user) {
           this.userService.setCurrentUser(user)
-          this.router.navigate(['home'])
+          this.router.navigate(['customer-area'])
           this.error = ''
         } else {
           this.userService.setCurrentUser(null)
