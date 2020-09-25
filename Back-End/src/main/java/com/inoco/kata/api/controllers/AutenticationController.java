@@ -32,7 +32,7 @@ public class AutenticationController {
 
 	@PostMapping("/login")
 	public User login(@RequestBody final User userAuth) throws Exception {
-		System.out.println("USER : " + userAuth);
+		LOGGER.info("User {} is trying to connect", userAuth);
 
 		final Optional<User> optionalUser = this.userRepository.findAll().stream()
 				.filter(user -> this.checkUser(user, userAuth)).findFirst();
@@ -40,6 +40,9 @@ public class AutenticationController {
 		if (optionalUser.isPresent()) {
 			final User currentUser = optionalUser.get();
 			this.userSession.setCurrentUser(currentUser);
+
+			LOGGER.info("User {} is connected", currentUser);
+
 			return this.getUserSession();
 		}
 
@@ -48,6 +51,8 @@ public class AutenticationController {
 
 	@GetMapping("/logout")
 	public void logout() {
+		LOGGER.info("User {} is connected", userAuth);
+
 		this.userSession.setCurrentUser(null);
 	}
 

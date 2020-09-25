@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,8 @@ import com.inoco.kata.api.shared.UserUtils;
 @RequestMapping("/transactions")
 @RestController
 public class TransactionController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionController.class);
+
 	@Autowired
 	private final TransactionRepository transactionRepository;
 
@@ -44,7 +48,8 @@ public class TransactionController {
 	@GetMapping("/history")
 	public List<Transaction> getTransactionHistory() {
 		final User currentUser = this.getUserSession();
-		System.out.println("User for history " + currentUser);
+
+		LOGGER.info("User {} check his transacction history", currentUser);
 		return this.transactionRepository.findAll().parallelStream()
 				.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId()))
 				.collect(Collectors.toList());
@@ -52,38 +57,39 @@ public class TransactionController {
 
 	@PostMapping("/accountStatement/{startDate}-{endDate}")
 	public List<Transaction> getAccountStatement(@PathVariable final Date startDate, @PathVariable final Date endDate) {
+		final User currentUser = this.getUserSession();
+		
+		LOGGER.info("User {} consults his account statement for period {} to {}", currentUser, startDate, endDate);
 		return this.transactionRepository.findAll().parallelStream()
-				.filter(transaction -> UserUtils.checkUserId(transaction, this.getUserSession().getId())
+				.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId())
 						&& DateUtils.compareDate(transaction.getDate(), startDate, endDate))
 				.collect(Collectors.toList());
 	}
 
 	@PutMapping("/deposit")
-	public Transaction getAccountStatement(@RequestBody final Transaction transaction) {
+	public Transaction toMakeDeposit(@RequestBody final Transaction transaction) {
 		final User currentUser = this.getUserSession();
-
+		
+		LOGGER.info("User {} added {}€ to his balance", currentUser, transaction.getAmount());
 		currentUser.setBalance(currentUser.getBalance() + transaction.getAmount());
-		transaction.setIdUser(this.getUserSession().getId());
+		transaction.setIdUser(currentUser.getId());
 
 		this.userRepository.save(currentUser);
-
-		System.out.println("After save deposit. User = " + this.getUserSession());
 
 		return this.transactionRepository.save(transaction);
 	}
 
 	@PutMapping("/withdrawal")
 	public Transaction toMakeWithdrawal(@RequestBody final Transaction transaction) {
-		transaction.setIdUser(this.getUserSession().getId());
+		final User currentUser = this.getUserSession();
+		
+		LOGGER.info("User {} deduct {}€ from his balance", currentUser, transaction.getAmount());
+		transaction.setIdUser(currentUser.getId());
 
 		return this.transactionRepository.save(transaction);
 	}
 
 	private User getUserSession() {
 		return this.userSession.getCurrentUser();
-	}
-
-	private void setUserSession(final User user) {
-		this.userSession.setCurrentUser(user);
 	}
 }
