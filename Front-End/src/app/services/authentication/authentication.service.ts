@@ -31,13 +31,11 @@ export class AuthenticationService {
     )
   }
 
-  logout(){
-    this.http.get(shared.apiUrl + "logout").pipe(
-      catchError(this.error.handleError<IUser>('authentication'))
-    )
+  logout(): Observable<boolean>{
+    return this.http.get<boolean>(shared.apiUrl + "logout")
   }
 
-  logoutComplete(){
+  logoutComplete(): void{
     this.router.navigate(['login'])
     this.userService.clearStorage();
   }

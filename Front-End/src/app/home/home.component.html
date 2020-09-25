@@ -6,29 +6,35 @@
             <div class="center">
                 <img src="../assets/logo-inoco.png" alt="Logo INOCO" height="70px">
             </div>
-            <a mat-list-item href="#">Faire un dépôt</a>
-            <a mat-list-item href="#">Faire un retrait</a>
-            <a mat-list-item href="#">Relevé de compte</a>
-            <a mat-list-item href="#">Historique de mes opérations</a>
+            <a mat-list-item routerlinkactive href="#">Faire un dépôt</a>
+            <a mat-list-item routerlinkactive href="#">Faire un retrait</a>
+            <a mat-list-item routerlinkactive href="#">Relevé de compte</a>
+            <a mat-list-item routerlinkactive href="#">Historique de mes opérations</a>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="full-height">
         <mat-toolbar color="primary">
             <div class="full-width margin-top-5">
-                <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-                    *ngIf="(isHandset$ | async)!.matches">
-                    <mat-icon>menu</mat-icon>
-                </button>
                 <p class="float-left">
-                    <span>Espace Client</span>
+                    <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+                        *ngIf="(isHandset$ | async)!.matches">
+                        <mat-icon class="icon-menu">menu</mat-icon>
+                    </button>
+                    <span class="margin-left-10">Espace Client</span>
                 </p>
                 <p class="float-right">
-                    <a href="#"><mat-icon>exit_to_app</mat-icon></a>
+                    <a [routerLink]="['/logout']"><mat-icon>exit_to_app</mat-icon></a>
                 </p>
-                <p class="float-right">User name - </p>
+                <p class="float-right">{{ currentUser.firstName }} {{ currentUser.lastName }}</p>
             </div>
         </mat-toolbar>
         <div>
+            <mat-card>
+                <mat-card-content>
+                    <p>Welcome in my KATA based on Angular and Java Spring Boot technologies.</p>
+                    <p>I invite you to browse the contents of the menu.</p>
+                </mat-card-content>
+            </mat-card>
             <router-outlet></router-outlet>
         </div>
     </mat-sidenav-content>

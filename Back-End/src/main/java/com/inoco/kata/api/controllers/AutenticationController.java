@@ -50,10 +50,11 @@ public class AutenticationController {
 	}
 
 	@GetMapping("/logout")
-	public void logout() {
-		LOGGER.info("User {} is connected", userAuth);
-
+	public boolean logout() {
+		LOGGER.info("User {} is deconnected", this.getUserSession());
 		this.userSession.setCurrentUser(null);
+
+		return true;
 	}
 
 	private User getUserSession() {

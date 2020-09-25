@@ -16,7 +16,16 @@
 .margin-top-5 {
     margin-top: 5px;
 }
+.margin-left-10 {
+    margin-left: 10px;
+}
 .material-icons {
     font-size: 35px;
     color: white;
+}
+.icon-menu {
+    margin-top: -5px;
+}
+.mat-drawer-container {
+    background-color: white;
 }
