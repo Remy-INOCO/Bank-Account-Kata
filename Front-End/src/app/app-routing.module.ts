@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthenticationGuard } from './authentication.guard';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { AuthenticationGuard } from './guards/authentication.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PreloadTaggedModuleStrategy } from './preload-tagged-module-strategy';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'home',
-    component: HomeComponent,
+    loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
+    data: { preload: true },
     canActivate: [
       AuthenticationGuard
     ]
@@ -25,11 +25,12 @@ const routes: Routes = [
   {
     path: '**',
     component: PageNotFoundComponent
-  },
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadTaggedModuleStrategy })],
+  providers: [PreloadTaggedModuleStrategy],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

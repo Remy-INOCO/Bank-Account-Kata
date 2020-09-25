@@ -1,43 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 
+import { EnsureModuleLoadedOnceGuard } from './guards/ensure-module-loaded-once.guard';
+import { CoreModule } from './core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { HomeComponent } from './home/home.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { AddHeaderInterceptor } from './services/interceptors/add-header.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    PageNotFoundComponent,
-    HomeComponent
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
     BrowserAnimationsModule,
-    HttpClientModule,
-    MatCardModule,
-    MatInputModule,
-    MatButtonModule
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AddHeaderInterceptor,
-      multi: true
-    }
+    AppRoutingModule,
+    CoreModule
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule extends EnsureModuleLoadedOnceGuard {
+  public constructor(@SkipSelf() @Optional() parentModule: CoreModule) {
+    super(parentModule);
+  }
+}
