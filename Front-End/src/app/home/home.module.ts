@@ -10,11 +10,17 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DepositComponent } from '../deposit/deposit.component';
 import { MatCardModule } from '@angular/material/card';
+import { WithdrawalComponent } from '../withdrawal/withdrawal.component';
+import { TransactionHistoryComponent } from '../transaction-history/transaction-history.component';
+import { AccountStatementComponent } from '../account-statement/account-statement.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    DepositComponent
+    DepositComponent,
+    WithdrawalComponent,
+    TransactionHistoryComponent,
+    AccountStatementComponent
   ],
   imports: [
     HomeRoutingModule,
@@ -24,7 +30,8 @@ import { MatCardModule } from '@angular/material/card';
     MatIconModule,
     MatListModule,
     MatGridListModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatCardModule
   ]
 })
 export class HomeModule { }
