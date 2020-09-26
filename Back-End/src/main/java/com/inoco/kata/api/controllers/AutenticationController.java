@@ -52,10 +52,15 @@ public class AutenticationController {
 
 	@GetMapping("/logout")
 	public boolean logout() {
-		LOGGER.info("{} is deconnected", CustomLoggerUtils.userInfos(this.getUserSession()));
-		this.userSession.setCurrentUser(null);
+		final User currentUser = this.getUserSession();
 
-		return true;
+		if (currentUser != null) {
+			LOGGER.info("{} is deconnected", CustomLoggerUtils.userInfos(currentUser));
+			this.userSession.setCurrentUser(null);
+			return true;
+		}
+
+		return false;
 	}
 
 	private User getUserSession() {

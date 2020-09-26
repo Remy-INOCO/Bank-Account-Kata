@@ -23,7 +23,8 @@ export class LoginComponent implements OnInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.userService.clearStorage();
+    this.clearUserIfExist()
+    
     this.form = this.formBuilder.group({
       firstName: ['Bilbon', Validators.required],
       lastName: ['Sacquet', Validators.required],
@@ -49,6 +50,16 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.userService.setCurrentUser(null)
           this.error = 'Les informations saisies ne figure pas dans nos données.'
           this.form.controls['password'].reset()
+        }
+      })
+    }
+  }
+
+  private clearUserIfExist(): void {
+    if(this.userService.getCurrentUser()) {
+      this.authenticationService.logout().subscribe(isDisconnected => {
+        if (isDisconnected) {
+          this.userService.clearStorage();
         }
       })
     }
