@@ -20,6 +20,7 @@ import com.inoco.kata.api.model.User;
 import com.inoco.kata.api.repository.TransactionRepository;
 import com.inoco.kata.api.repository.UserRepository;
 import com.inoco.kata.api.session.UserSession;
+import com.inoco.kata.api.shared.CustomLoggerUtils;
 import com.inoco.kata.api.shared.DateUtils;
 import com.inoco.kata.api.shared.UserUtils;
 
@@ -46,10 +47,10 @@ public class TransactionController {
 	}
 
 	@GetMapping("/history")
-	public List<Transaction> getTransactionHistory() {
+	public List<Transaction> getTransactionsHistory() {
 		final User currentUser = this.getUserSession();
 
-		LOGGER.info("User {} check his transacction history", currentUser);
+		LOGGER.info("{} check his transactions history", CustomLoggerUtils.userInfos(currentUser));
 		return this.transactionRepository.findAll().parallelStream()
 				.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId()))
 				.collect(Collectors.toList());
@@ -58,8 +59,9 @@ public class TransactionController {
 	@PostMapping("/accountStatement/{startDate}-{endDate}")
 	public List<Transaction> getAccountStatement(@PathVariable final Date startDate, @PathVariable final Date endDate) {
 		final User currentUser = this.getUserSession();
-		
-		LOGGER.info("User {} consults his account statement for period {} to {}", currentUser, startDate, endDate);
+
+		LOGGER.info("{} consults his account statement for period {} to {}", CustomLoggerUtils.userInfos(currentUser),
+				startDate, endDate);
 		return this.transactionRepository.findAll().parallelStream()
 				.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId())
 						&& DateUtils.compareDate(transaction.getDate(), startDate, endDate))
@@ -69,8 +71,8 @@ public class TransactionController {
 	@PutMapping("/deposit")
 	public Transaction toMakeDeposit(@RequestBody final Transaction transaction) {
 		final User currentUser = this.getUserSession();
-		
-		LOGGER.info("User {} added {}€ to his balance", currentUser, transaction.getAmount());
+
+		LOGGER.info("{} added {}€ to his balance", CustomLoggerUtils.userInfos(currentUser), transaction.getAmount());
 		currentUser.setBalance(currentUser.getBalance() + transaction.getAmount());
 		transaction.setIdUser(currentUser.getId());
 
@@ -82,8 +84,9 @@ public class TransactionController {
 	@PutMapping("/withdrawal")
 	public Transaction toMakeWithdrawal(@RequestBody final Transaction transaction) {
 		final User currentUser = this.getUserSession();
-		
-		LOGGER.info("User {} deduct {}€ from his balance", currentUser, transaction.getAmount());
+
+		LOGGER.info("{} deduct {}€ from his balance", CustomLoggerUtils.userInfos(currentUser),
+				transaction.getAmount());
 		transaction.setIdUser(currentUser.getId());
 
 		return this.transactionRepository.save(transaction);

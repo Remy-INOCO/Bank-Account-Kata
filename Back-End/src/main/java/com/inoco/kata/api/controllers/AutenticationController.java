@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inoco.kata.api.model.User;
 import com.inoco.kata.api.repository.UserRepository;
 import com.inoco.kata.api.session.UserSession;
+import com.inoco.kata.api.shared.CustomLoggerUtils;
 
 @RestController
 public class AutenticationController {
@@ -32,7 +33,7 @@ public class AutenticationController {
 
 	@PostMapping("/login")
 	public User login(@RequestBody final User userAuth) throws Exception {
-		LOGGER.info("User {} is trying to connect", userAuth);
+		LOGGER.info("{} is trying to connect", CustomLoggerUtils.userInfos(userAuth));
 
 		final Optional<User> optionalUser = this.userRepository.findAll().stream()
 				.filter(user -> this.checkUser(user, userAuth)).findFirst();
@@ -41,7 +42,7 @@ public class AutenticationController {
 			final User currentUser = optionalUser.get();
 			this.userSession.setCurrentUser(currentUser);
 
-			LOGGER.info("User {} is connected", currentUser);
+			LOGGER.info("{} is connected", CustomLoggerUtils.userInfos(currentUser));
 
 			return this.getUserSession();
 		}
@@ -51,7 +52,7 @@ public class AutenticationController {
 
 	@GetMapping("/logout")
 	public boolean logout() {
-		LOGGER.info("User {} is deconnected", this.getUserSession());
+		LOGGER.info("{} is deconnected", CustomLoggerUtils.userInfos(this.getUserSession()));
 		this.userSession.setCurrentUser(null);
 
 		return true;
