@@ -6,18 +6,17 @@ Back End :
 	✔ Bean User @done(20-09-23 12:12)
 	✔ Bean Transaction @done(20-09-23 23:01)
 	Faire un dépôt param (userId, amount) :
-		Boucler si plusieurs (voir si le temps sinon juste un montant)
-			✔ Récupérer l'id de l'utilisateur @done(20-09-23 23:02)
-			✔ Ajouter le montant indiqué au solde @done(20-09-23 23:02)
-			✔ Ajouter une nouvelle ligne à la table de l'historique des transactions @done(20-09-23 23:02)
+		✔ Récupérer l'id de l'utilisateur @done(20-09-23 23:02)
+		✔ Ajouter le montant indiqué au solde @done(20-09-23 23:02)
+		✔ Ajouter une nouvelle ligne à la table de l'historique des transactions @done(20-09-23 23:02)
 	Faire un retrait param (userId, amount) :
-		☐ Récupérer l'id de l'utilisateur
-		☐ Soustraire le montant indiqué au solde
-		☐ Ajouter une nouvelle ligne à la table de l'historique des transactions
+		✔ Récupérer l'id de l'utilisateur @done(20-09-28 01:57)
+		✔ Soustraire le montant indiqué au solde @done(20-09-28 01:57)
+		✔ Ajouter une nouvelle ligne à la table de l'historique des transactions @done(20-09-28 01:57)
 	Visualiser le relevé de compte (entre deux dates ou bien le mois) param (userId, startDate, endDate) :
-		☐ Récupérer l'id de l'utilisateur
-		☐ Récupérer la date de début et de fin
-		☐ Rechercher dans la table de l'historique des transactions pour récupérer toutes les opérations du client connecté entre les dates définies
+		✔ Récupérer l'id de l'utilisateur @done(20-09-28 01:57)
+		✔ Récupérer la date de début et de fin @done(20-09-28 01:57)
+		✔ Rechercher dans la table de l'historique des transactions pour récupérer toutes les opérations du client connecté entre les dates définies @done(20-09-28 01:57)
 	Historique des opérations param (userId) :
 		✔ Récupérer l'id de l'utilisateur @done(20-09-23 23:01)
 		✔ Rechercher dans la table de l'historique des transactions pour récupérer toutes les opérations du client connecté @done(20-09-23 23:01)
@@ -31,35 +30,26 @@ Front End :
 		✔ Interface de connexion @done(20-09-23 12:12)
 		✔ Utilisation d'un service pour stocker les informations du client + mise en session @done(20-09-23 23:04)
 	Deuxième page si utilisateur connecté :
-		☐ CanActivate
-		☐ Resolver
+		✔ CanActivate (authGuard) @done(20-09-25 12:00)
 		Nav Bar avec :
-			☐ Logo INOCO
-			☐ Nom User - Déconnexion)
-			☐ Faire une dépôt
-			☐ Faire un retrait
-			☐ Relevé de compte
-			☐ Historique de mes opérations
+			✔ Logo INOCO @done(20-09-28 01:55)
+			✔ Nom User - Déconnexion) @done(20-09-28 01:55)
+			✔ Faire une transaction @done(20-09-28 01:55)
+			✔ Relevé de compte @done(20-09-28 01:55)
+			✔ Historique de mes opérations @done(20-09-28 01:55)
 
-		Page Dépôt :
-			☐ Visualiser montant actuel
-			Formulaire (voir pour faire plusieurs si le temps ? Pour différents libellé)
-				☐ Libellé
-				☐ Montant
-			☐ CanDeactivate
-			☐ Resolver
-
-		Page Retrait :
-			☐ Visualiser montant actuel
+		Page transaction :
+			Si retrait :
+				✔ Visualiser montant actuel @done(20-09-28 01:57)
 			Formulaire :
-				☐ Libellé
-				☐ Montant
+				✔ Libellé @done(20-09-28 01:57)
+				✔ Montant @done(20-09-28 01:57)
 			☐ CanDeactivate
-			☐ Resolver
 			
 		Page Relevé de compte :
-			☐ Afficher date, montant et solde
+			✔ Afficher date, montant et solde @done(20-09-28 01:56)
 			☐ Imprimer (print-js)
 
 		Page Historique des opérations :
-			☐ Visualisation sous forme de table
+			✔ Visualisation sous forme de table @done(20-09-28 01:56)
+			✔ Resolver @done(20-09-28 01:56)
