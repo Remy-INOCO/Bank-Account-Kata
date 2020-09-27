@@ -1,15 +1,14 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="full-height">
     <mat-sidenav #drawer class="sidenav" [ngClass]="{hidden: !(isHandset$ | async)!.matches}" fixedInViewport="false"
         [attr.role]="isHandset$ ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async)!.matches ? 'over' : 'side'"
         [opened]="!(isHandset$ | async)!.matches">
         <mat-nav-list style="margin-left: 5px;">
-            <div class="center">
+            <a [routerLink]="['/customer-area']" class="center">
                 <img src="../assets/logo-inoco.png" alt="Logo INOCO" height="70px">
-            </div>
-            <a mat-list-item routerlinkactive href="#">Faire un dépôt</a>
-            <a mat-list-item routerlinkactive href="#">Faire un retrait</a>
-            <a mat-list-item routerlinkactive href="#">Relevé de compte</a>
-            <a mat-list-item routerlinkactive href="#">Historique de mes opérations</a>
+            </a>
+            <a mat-list-item routerlinkactive [routerLink]="['/customer-area/handle-transaction']">To make transaction</a>
+            <a mat-list-item routerlinkactive [routerLink]="['/customer-area/account-statement']">Account statement</a>
+            <a mat-list-item routerlinkactive [routerLink]="['/customer-area/transactions-history']">Transactions history</a>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="full-height">
@@ -20,7 +19,7 @@
                         *ngIf="(isHandset$ | async)!.matches">
                         <mat-icon class="icon-menu">menu</mat-icon>
                     </button>
-                    <span class="margin-left-10">Espace Client</span>
+                    <span class="margin-left-10">Customer area</span>
                 </p>
                 <p class="float-right">
                     <a [routerLink]="['/logout']"><mat-icon>exit_to_app</mat-icon></a>

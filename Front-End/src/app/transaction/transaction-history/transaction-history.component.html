@@ -1,0 +1,4 @@
+<div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+</div>
+<kata-transaction-table-view *ngIf="transactionsHistory" [transactions]="transactionsHistory"></kata-transaction-table-view>

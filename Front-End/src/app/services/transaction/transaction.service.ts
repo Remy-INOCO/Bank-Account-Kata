@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators'
-import { ITransaction } from 'src/app/models/transaction';
-import { HttpHandleError } from 'src/app/shared/http-handle-error';
+import { catchError } from 'rxjs/operators'
+import { ITransaction } from '../../models/transaction';
+import { HttpHandleError } from '../../shared/http-handle-error';
 import { shared } from '../../shared/index'
 
 @Injectable({
@@ -16,16 +16,26 @@ export class TransactionService {
   constructor(private httpClient: HttpClient) { }
 
   getTransactionHistory(): Observable<ITransaction[]> {
-    return this.httpClient.get<ITransaction[]>(shared.apiUrl + this.transactionUrl +  "history").pipe(
-      tap(transactions => console.log(transactions)),
+    return this.httpClient.get<ITransaction[]>(shared.apiUrl + this.transactionUrl + 'history').pipe(
       catchError(this.error.handleError<ITransaction[]>('getTransactionHistory'))
-    )
+    );
   }
 
   toMakeDeposit(transaction: ITransaction): Observable<ITransaction> {
-    return this.httpClient.put<ITransaction>(shared.apiUrl + this.transactionUrl +  "deposit", transaction).pipe(
-      tap(result => console.log(result)),
+    return this.httpClient.put<ITransaction>(shared.apiUrl + this.transactionUrl + 'deposit', transaction).pipe(
       catchError(this.error.handleError<ITransaction>('toMakeDeposit'))
-    )
+    );
+  }
+
+  toMakeWithdrawal(transaction: ITransaction): Observable<ITransaction> {
+    return this.httpClient.put<ITransaction>(shared.apiUrl + this.transactionUrl + 'withdrawal', transaction).pipe(
+      catchError(this.error.handleError<ITransaction>('toMakeWithdrawal'))
+    );
+  }
+
+  getAccountStatement(startDate: string, endDate: string) {
+    return this.httpClient.get<ITransaction[]>(shared.apiUrl + this.transactionUrl + 'accountStatement/' + new Date(startDate) + '-' + new Date(endDate) + '').pipe(
+      catchError(this.error.handleError<ITransaction[]>('getAccountStatement'))
+    );
   }
 }

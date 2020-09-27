@@ -23,9 +23,9 @@ public class LoadDatabase {
 	CommandLineRunner initDatabase(final UserRepository userRepository,
 			final TransactionRepository transactionRepository) {
 		return args -> {
-			LOGGER.info("Preloading user {}", userRepository.save(new User("Bilbon", "Sacquet", 500, "Test123")));
-			LOGGER.info("Preloading user {}", userRepository.save(new User("Frodon", "Sacquet", 1000, "Test123")));
-			LOGGER.info("Preloading user {}", userRepository.save(new User("Sam", "Gamegie", 1500, "Test123")));
+			LOGGER.info("Preloading user {}", userRepository.save(new User("Bilbon", "Sacquet", 1500, "Test123")));
+			LOGGER.info("Preloading user {}", userRepository.save(new User("Frodon", "Sacquet", 2000, "Test123")));
+			LOGGER.info("Preloading user {}", userRepository.save(new User("Sam", "Gamegie", 2500, "Test123")));
 
 			LOGGER.info("Preloading transaction {}",
 					transactionRepository.save(new Transaction(this.getUserId(userRepository, 1), Operation.DEPOSIT,

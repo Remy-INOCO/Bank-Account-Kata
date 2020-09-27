@@ -1,0 +1,63 @@
+<mat-card class="handle-transaction">
+    <mat-card-content>
+        <p class="center"><b>Your actual balance : {{ currentUser.balance }} €</b></p>
+        <form [formGroup]="transactionForm" (ngSubmit)="submit()">
+            <mat-form-field>
+                <mat-label>Select your operation</mat-label>
+                <mat-select formControlName="operation">
+                    <mat-option *ngFor="let operation of operations" [value]="operation.valueOf()">
+                        {{ operation }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div *ngIf="handleFormError(transactionForm, 'operation')"
+                class="error">
+                <div *ngIf="transactionForm.controls['operation'].errors.required">
+                    Operation is required.
+                </div>
+            </div>
+            <br>
+            <div>
+                <mat-form-field>
+                    <mat-label>Wording</mat-label>
+                    <input type="text" matInput placeholder="Write a wording" formControlName="wording">
+                </mat-form-field>
+                <div *ngIf="handleFormError(transactionForm, 'wording')"
+                    class="error">
+                    <div *ngIf="transactionForm.controls['wording'].errors.required">
+                        Wording is required.
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div>
+                <mat-form-field>
+                    <mat-label>Amount</mat-label>
+                    <input disabled matInput [value]="transactionForm.value.amount + ' €'">
+                </mat-form-field>
+                <mat-slider thumbLabel formControlName="amount" [displayWith]="formatLabel" tickInterval="1000" min="1"
+                    max="5000"></mat-slider>
+                <div *ngIf="handleFormError(transactionForm, 'amount')"
+                    class="error">
+                    <div *ngIf="transactionForm.controls['amount'].errors.required">
+                        Amount is required.
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div *ngIf="errorMessage.transaction === 'true'" class="success">
+                Transaction success.
+            </div>
+            <div *ngIf="errorMessage.transaction === 'false'" class="error">
+                Error during transaction.
+            </div>
+            <div *ngIf="!errorMessage.amountAboveBalance" class="error">
+                Amount above your balance !
+            </div>
+            <p class="float-right">
+                <button color="primary" type="submit" mat-raised-button
+                    [disabled]="transactionForm.invalid">Valider</button>
+            </p>
+        </form>
+    </mat-card-content>
+</mat-card>

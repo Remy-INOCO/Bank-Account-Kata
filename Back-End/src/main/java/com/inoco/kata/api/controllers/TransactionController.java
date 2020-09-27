@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,46 +49,71 @@ public class TransactionController {
 	public List<Transaction> getTransactionsHistory() {
 		final User currentUser = this.getUserSession();
 
-		LOGGER.info("{} check his transactions history", CustomLoggerUtils.userInfos(currentUser));
-		return this.transactionRepository.findAll().parallelStream()
-				.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId()))
-				.collect(Collectors.toList());
+		if (currentUser != null) {
+			LOGGER.info("{} check his transactions history", CustomLoggerUtils.userInfos(currentUser));
+			return this.transactionRepository.findAll().stream()
+					.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId()))
+					.collect(Collectors.toList());
+		}
+
+		return null;
 	}
 
-	@PostMapping("/accountStatement/{startDate}-{endDate}")
+	@GetMapping("/accountStatement/{startDate}-{endDate}")
 	public List<Transaction> getAccountStatement(@PathVariable final Date startDate, @PathVariable final Date endDate) {
 		final User currentUser = this.getUserSession();
+		if (currentUser != null && startDate.before(endDate)) {
+			LOGGER.info("{} consults his account statement for period {} to {}",
+					CustomLoggerUtils.userInfos(currentUser), startDate, endDate);
+			return this.transactionRepository.findAll().stream()
+					.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId())
+							&& DateUtils.compareDate(transaction.getDate(), startDate, endDate))
+					.collect(Collectors.toList());
+		}
 
-		LOGGER.info("{} consults his account statement for period {} to {}", CustomLoggerUtils.userInfos(currentUser),
-				startDate, endDate);
-		return this.transactionRepository.findAll().parallelStream()
-				.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId())
-						&& DateUtils.compareDate(transaction.getDate(), startDate, endDate))
-				.collect(Collectors.toList());
+		return null;
 	}
 
 	@PutMapping("/deposit")
 	public Transaction toMakeDeposit(@RequestBody final Transaction transaction) {
 		final User currentUser = this.getUserSession();
 
-		LOGGER.info("{} added {}€ to his balance", CustomLoggerUtils.userInfos(currentUser), transaction.getAmount());
-		currentUser.setBalance(currentUser.getBalance() + transaction.getAmount());
-		transaction.setIdUser(currentUser.getId());
+		if (currentUser != null) {
+			LOGGER.info("{} added {} € to his balance", CustomLoggerUtils.userInfos(currentUser),
+					transaction.getAmount());
+			final Integer balance = currentUser.getBalance() + transaction.getAmount();
+			currentUser.setBalance(balance);
+			transaction.setBalance(balance);
+			transaction.setDate(new Date());
+			transaction.setIdUser(currentUser.getId());
 
-		this.userRepository.save(currentUser);
+			this.userRepository.save(currentUser);
 
-		return this.transactionRepository.save(transaction);
+			return this.transactionRepository.save(transaction);
+		}
+
+		return null;
 	}
 
 	@PutMapping("/withdrawal")
 	public Transaction toMakeWithdrawal(@RequestBody final Transaction transaction) {
 		final User currentUser = this.getUserSession();
 
-		LOGGER.info("{} deduct {}€ from his balance", CustomLoggerUtils.userInfos(currentUser),
-				transaction.getAmount());
-		transaction.setIdUser(currentUser.getId());
+		if (currentUser != null) {
+			LOGGER.info("{} deduct {} € from his balance", CustomLoggerUtils.userInfos(currentUser),
+					transaction.getAmount());
+			final Integer balance = currentUser.getBalance() - transaction.getAmount();
+			currentUser.setBalance(balance);
+			transaction.setBalance(balance);
+			transaction.setDate(new Date());
+			transaction.setIdUser(currentUser.getId());
 
-		return this.transactionRepository.save(transaction);
+			this.userRepository.save(currentUser);
+
+			return this.transactionRepository.save(transaction);
+		}
+
+		return null;
 	}
 
 	private User getUserSession() {

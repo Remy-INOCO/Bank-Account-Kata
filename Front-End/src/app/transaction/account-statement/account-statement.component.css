@@ -1,0 +1,12 @@
+.handle-account-statement {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mat-card-content {
+    width: 250px;
+}
+.mat-slider-horizontal, .mat-form-field {
+    width: 100% !important;
+}

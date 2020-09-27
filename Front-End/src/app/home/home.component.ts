@@ -14,25 +14,15 @@ import { UserService } from '../services/user/user.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  currentUser: IUser
+  transaction: ITransaction
 
   isHandset$: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.Handset);
   
   constructor(private breakpointObserver: BreakpointObserver,
-              private transactionService: TransactionService,
               private userService: UserService) { }
 
   ngOnInit(): void {
-    const currentUser: IUser = this.userService.getCurrentUser()
-    const transaction: ITransaction = {
-      idUser: currentUser.id,
-      operation: Operation.DEPOSIT,
-      wording: 'Premier test de versement',
-      date: new Date(),
-      amount: 200
-    }
-    
-    this.transactionService.toMakeDeposit(transaction).subscribe()
-    this.transactionService.getTransactionHistory().subscribe()
+    this.currentUser = this.userService.getCurrentUser();
   }
-
 }

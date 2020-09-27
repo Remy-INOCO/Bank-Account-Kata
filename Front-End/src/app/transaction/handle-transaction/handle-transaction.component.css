@@ -1,0 +1,16 @@
+.mat-slider-thumb-label {
+    width: 35px !important;
+    height: 35px !important;
+}
+.handle-transaction {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mat-card-content {
+    width: 250px;
+}
+.mat-slider-horizontal, .mat-form-field {
+    width: 100% !important;
+}

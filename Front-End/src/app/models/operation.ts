@@ -1,4 +1,4 @@
 export enum Operation {
-    DEPOSIT,
-    WITHDRAWAL
+    DEPOSIT = 'DEPOSIT',
+    WITHDRAWAL = 'WITHDRAWAL'
 }
