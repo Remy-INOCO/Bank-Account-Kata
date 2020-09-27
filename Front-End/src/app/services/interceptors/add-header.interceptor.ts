@@ -7,8 +7,6 @@ export class AddHeaderInterceptor implements HttpInterceptor {
 
   constructor() { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("AddHeaderInterceptor - " + req.url);
-
     let jsonReq: HttpRequest<any> = req.clone({
       setHeaders: {
         'Access-Control-Allow-Origin':'*',
