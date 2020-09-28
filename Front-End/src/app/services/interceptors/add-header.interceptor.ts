@@ -6,14 +6,15 @@ import { Observable } from 'rxjs';
 export class AddHeaderInterceptor implements HttpInterceptor {
 
   constructor() { }
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let jsonReq: HttpRequest<any> = req.clone({
-      setHeaders: {
-        'Access-Control-Allow-Origin':'*',
-        'Content-Type':'application/json'
-      }
-    })
 
-    return next.handle(jsonReq)
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const jsonReq: HttpRequest<any> = req.clone({
+      setHeaders: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return next.handle(jsonReq);
   }
 }

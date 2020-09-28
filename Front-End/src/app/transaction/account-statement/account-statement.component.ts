@@ -16,7 +16,7 @@ export class AccountStatementComponent implements OnInit, OnDestroy {
   accountStatementForm: FormGroup;
   accountStatement$: Subscription;
   transactionsAccountStatement: ITransaction[];
-  errorMessage: string = '';
+  errorMessage = '';
 
   constructor(private formBuilder: FormBuilder,
               private datePipe: DatePipe,
@@ -29,36 +29,36 @@ export class AccountStatementComponent implements OnInit, OnDestroy {
     });
   }
 
-  handleFormError(form: FormGroup, field: string) {
+  handleFormError(form: FormGroup, field: string): boolean {
     return handleFormError(form, field);
   }
 
-  checkDate() {
+  checkDate(): boolean {
     const formValue = this.accountStatementForm.value;
-    
+
     return formValue.startDate >= formValue.endDate ? false : true;
   }
 
-  submit() {
+  submit(): void {
     const formValue = this.accountStatementForm.value;
-    
+
     if (this.accountStatementForm.valid) {
       this.accountStatement$ = this.transactionService.getAccountStatement(formValue.startDate, formValue.endDate)
-      .subscribe(transactions =>  {
-        if (transactions && transactions.length != 0) {
-          this.transactionsAccountStatement = transactions
-          this.errorMessage = '';
-        } else {
-          this.transactionsAccountStatement = [];
-          this.errorMessage = 'No data could be recovered.';
-        }
-      });
+        .subscribe(transactions => {
+          if (transactions && transactions.length !== 0) {
+            this.transactionsAccountStatement = transactions;
+            this.errorMessage = '';
+          } else {
+            this.transactionsAccountStatement = [];
+            this.errorMessage = 'No data could be recovered.';
+          }
+        });
     }
   }
-  
+
   ngOnDestroy(): void {
     if (this.accountStatement$) {
-      this.accountStatement$.unsubscribe()
+      this.accountStatement$.unsubscribe();
     }
   }
 }

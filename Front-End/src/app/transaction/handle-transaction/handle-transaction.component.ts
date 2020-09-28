@@ -40,7 +40,7 @@ export class HandleTransactionComponent implements OnInit, OnDestroy {
     this.currentUser = this.userService.getCurrentUser();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.depositTransaction$) {
       this.depositTransaction$.unsubscribe();
     }
@@ -49,11 +49,11 @@ export class HandleTransactionComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleFormError(form: FormGroup, field: string) {
+  handleFormError(form: FormGroup, field: string): boolean {
     return handleFormError(form, field);
   }
 
-  submit() {
+  submit(): void {
     this.errorMessage.amountAboveBalance = true;
     this.errorMessage.transaction = '';
 
@@ -72,7 +72,7 @@ export class HandleTransactionComponent implements OnInit, OnDestroy {
           }
           this.withdrawalTransaction$ = this.handleTransaction(this.transactionService.toMakeWithdrawal(formValue));
           break;
-      
+
         default:
           break;
       }
@@ -82,16 +82,16 @@ export class HandleTransactionComponent implements OnInit, OnDestroy {
   private handleTransaction(action: Observable<ITransaction>): Subscription {
     return action.subscribe((transaction: ITransaction) => {
       if (transaction) {
-        this.errorMessage.transaction = 'true'
-        this.currentUser.balance = transaction.balance
-        this.userService.setCurrentUser(this.currentUser)
+        this.errorMessage.transaction = 'true';
+        this.currentUser.balance = transaction.balance;
+        this.userService.setCurrentUser(this.currentUser);
       } else {
-        this.errorMessage.transaction = 'false'
+        this.errorMessage.transaction = 'false';
       }
     });
   }
 
-  formatLabel(value: number) {
-    return value + '€'
+  formatLabel(value: number): string {
+    return value + '€';
   }
 }

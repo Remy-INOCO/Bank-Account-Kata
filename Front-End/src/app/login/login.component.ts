@@ -12,9 +12,9 @@ import { UserService } from '../services/user/user.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  error: string
-  form: FormGroup
-  authentication$: Subscription
+  error: string;
+  form: FormGroup;
+  authentication$: Subscription;
 
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
@@ -22,51 +22,51 @@ export class LoginComponent implements OnInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.clearUserIfExist()
-    
+    this.clearUserIfExist();
+
     this.form = this.formBuilder.group({
       firstName: ['Bilbon', Validators.required],
       lastName: ['Sacquet', Validators.required],
-      password: ['Test123', Validators.required], 
+      password: ['Test123', Validators.required],
     });
   }
 
-  submit() {
+  submit(): void {
     if (this.form.valid) {
-      const formValue = this.form.value
-      const user: IUser = {
+      const formValue = this.form.value;
+      const userForm: IUser = {
         firstName: formValue.firstName,
         lastName: formValue.lastName,
         password: formValue.password
-      }
+      };
 
-      this.authentication$ = this.authenticationService.login(user).subscribe((user: IUser) => {
+      this.authentication$ = this.authenticationService.login(userForm).subscribe((user: IUser) => {
         if (user) {
-          this.userService.setCurrentUser(user)
-          this.router.navigate(['customer-area'])
-          this.error = ''
+          this.userService.setCurrentUser(user);
+          this.router.navigate(['customer-area']);
+          this.error = '';
         } else {
-          this.userService.setCurrentUser(null)
-          this.error = 'Les informations saisies ne figure pas dans nos données.'
-          this.form.controls['password'].reset()
+          this.userService.setCurrentUser(null);
+          this.error = 'Les informations saisies ne figure pas dans nos données.';
+          this.form.controls.password.reset();
         }
-      })
+      });
     }
   }
 
   private clearUserIfExist(): void {
-    if(this.userService.getCurrentUser()) {
+    if (this.userService.getCurrentUser()) {
       this.authenticationService.logout().subscribe(isDisconnected => {
         if (isDisconnected) {
           this.userService.clearStorage();
         }
-      })
+      });
     }
   }
 
   ngOnDestroy(): void {
-    if(this.authentication$) {
-      this.authentication$.unsubscribe()
+    if (this.authentication$) {
+      this.authentication$.unsubscribe();
     }
   }
 }

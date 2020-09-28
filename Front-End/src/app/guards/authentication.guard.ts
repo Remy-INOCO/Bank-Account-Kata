@@ -14,28 +14,28 @@ export class AuthenticationGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
+
     // session for 10 min.
     const session = this.validateSession('LOGGED', 600000);
 
-    if(!session && !this.userService.getCurrentUser()) {
+    if (!session && !this.userService.getCurrentUser()) {
       this.router.navigate(['login']);
-      return false
+      return false;
     }
 
     return true;
   }
-  
-  private validateSession(key, exp) : boolean {
+
+  private validateSession(key, exp): boolean {
     const user: IUser = JSON.parse(localStorage.getItem(key));
-    
+
     if (user) {
       if (new Date().getTime() - user.sessionTime > exp) {
         this.userService.setCurrentUser(null);
-        return false
+        return false;
       } else {
         this.userService.setCurrentUser(user);
-        return true
+        return true;
       }
     }
   }

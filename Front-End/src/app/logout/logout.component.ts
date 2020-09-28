@@ -13,8 +13,8 @@ export class LogoutComponent implements OnInit {
               private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    if (this.route.snapshot.data['isDisconnected']) {
-        this.authenticationService.logoutComplete()
+    if (this.route.snapshot.data.isDisconnected) {
+      this.authenticationService.logoutComplete();
     }
   }
 }

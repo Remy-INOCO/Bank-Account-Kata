@@ -24,17 +24,3 @@ export class TransactionResolver implements Resolve<TransactionResolved> {
     );
   }
 }
-
-// resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<TransactionResolved> {
-//   console.log('yolo');
-  
-//   return new Promise((resolve, reject) => {
-//     this.transactionService.getTransactionHistory().pipe(
-//       map(transactions => resolve({ transactions })),
-//       catchError(async (error) => reject({
-//         transactions: null,
-//         errorMessage: 'Error when call transaction history ' + error
-//       }))
-//     ).subscribe()
-//   })
-// }

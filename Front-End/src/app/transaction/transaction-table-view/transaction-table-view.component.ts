@@ -13,9 +13,9 @@ export class TransactionTableViewComponent implements OnInit, AfterViewInit, OnC
   displayedColumns: string[] = ['date', 'operation', 'wording', 'amount', 'balance'];
   dataSource = new MatTableDataSource<ITransaction>();
   @Input() transactions: ITransaction[];
-  
+
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor() { }
 
@@ -23,12 +23,12 @@ export class TransactionTableViewComponent implements OnInit, AfterViewInit, OnC
     this.dataSource = new MatTableDataSource(this.transactions);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.dataSource = new MatTableDataSource(this.transactions);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

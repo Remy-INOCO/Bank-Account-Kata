@@ -14,11 +14,11 @@ import { UserService } from '../services/user/user.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  currentUser: IUser
-  transaction: ITransaction
+  currentUser: IUser;
+  transaction: ITransaction;
 
   isHandset$: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.Handset);
-  
+
   constructor(private breakpointObserver: BreakpointObserver,
               private userService: UserService) { }
 

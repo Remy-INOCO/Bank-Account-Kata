@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators'
-import { IUser } from '../../models/user'
-import { shared } from '../../shared/index'
-import { HttpHandleError } from '../../shared/http-handle-error'
+import { map, catchError } from 'rxjs/operators';
+import { IUser } from '../../models/user';
+import { shared } from '../../shared/index';
+import { HttpHandleError } from '../../shared/http-handle-error';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
 
@@ -12,28 +12,28 @@ import { UserService } from '../user/user.service';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private error = new HttpHandleError()
+  private error = new HttpHandleError();
 
   constructor(private http: HttpClient,
               private router: Router,
               private userService: UserService) { }
 
-  login(user: IUser): Observable<IUser> {
-    return this.http.post<IUser>(shared.apiUrl + "login", user).pipe(
+  login(currentUser: IUser): Observable<IUser> {
+    return this.http.post<IUser>(shared.apiUrl + 'login', currentUser).pipe(
       map((user: IUser) => {
-        user.password = ''
-        return user
+        user.password = '';
+        return user;
       }),
       catchError(this.error.handleError<IUser>('authentication'))
-    )
+    );
   }
 
-  logout(): Observable<boolean>{
-    return this.http.get<boolean>(shared.apiUrl + "logout")
+  logout(): Observable<boolean> {
+    return this.http.get<boolean>(shared.apiUrl + 'logout');
   }
 
-  logoutComplete(): void{
-    this.router.navigate(['login'])
+  logoutComplete(): void {
+    this.router.navigate(['login']);
     this.userService.clearStorage();
   }
 }

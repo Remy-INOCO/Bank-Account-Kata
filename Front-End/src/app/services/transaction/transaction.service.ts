@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators'
+import { catchError } from 'rxjs/operators';
 import { ITransaction } from '../../models/transaction';
 import { HttpHandleError } from '../../shared/http-handle-error';
-import { shared } from '../../shared/index'
+import { shared } from '../../shared/index';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-  private transactionUrl = 'transactions/'
-  private error = new HttpHandleError()
+  private transactionUrl = 'transactions/';
+  private error = new HttpHandleError();
 
   constructor(private httpClient: HttpClient) { }
 
@@ -33,8 +33,9 @@ export class TransactionService {
     );
   }
 
-  getAccountStatement(startDate: string, endDate: string) {
-    return this.httpClient.get<ITransaction[]>(shared.apiUrl + this.transactionUrl + 'accountStatement/' + new Date(startDate) + '-' + new Date(endDate) + '').pipe(
+  getAccountStatement(startDate: string, endDate: string): Observable<ITransaction[]> {
+    return this.httpClient.get<ITransaction[]>(shared.apiUrl + this.transactionUrl + 'accountStatement/' +
+      new Date(startDate) + '-' + new Date(endDate)).pipe(
       catchError(this.error.handleError<ITransaction[]>('getAccountStatement'))
     );
   }

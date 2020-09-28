@@ -11,6 +11,6 @@ export class LogoutResolver implements Resolve<boolean> {
   constructor(private authenticationService: AuthenticationService) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return this.authenticationService.logout()
+    return this.authenticationService.logout();
   }
 }

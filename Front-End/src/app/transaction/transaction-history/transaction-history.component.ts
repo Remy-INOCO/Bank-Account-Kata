@@ -11,14 +11,14 @@ import { ITransaction, TransactionResolved } from '../../models/transaction';
   styleUrls: ['./transaction-history.component.css']
 })
 export class TransactionHistoryComponent implements OnInit {
-  errorMessage: string = '';
+  errorMessage = '';
   transactionsHistory: ITransaction[];
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    const transactionResolved: TransactionResolved = this.route.snapshot.data['transactionsHistory'];
-    
+    const transactionResolved = this.route.snapshot.data.transactionsHistory;
+
     this.transactionsHistory = transactionResolved.transactions;
 
     if (!this.transactionsHistory) {
