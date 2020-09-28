@@ -2,10 +2,7 @@ package com.inoco.kata.api.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "Transaction")
 public class Transaction {
@@ -13,6 +10,7 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long idUser;
+	@Enumerated(EnumType.STRING)
 	private Operation operation;
 	private String wording;
 	private Date date;

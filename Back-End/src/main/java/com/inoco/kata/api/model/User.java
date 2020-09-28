@@ -1,12 +1,10 @@
 package com.inoco.kata.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity(name = "User")
 public class User {
@@ -18,7 +16,8 @@ public class User {
 	private Integer balance;
 	private String password;
 
-	@OneToMany
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY)
 	private List<Transaction> transactionList;
 
 	public User() {
