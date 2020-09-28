@@ -27,6 +27,9 @@
                 The start date can't be equal to or later than the end date.
             </div>
             <br>
+            <p class="float-left" *ngIf="accountStatementForm.valid && transactionsAccountStatement && transactionsAccountStatement.length !== 0">
+                <button color="primary" (click)="printAccountStatement()" mat-raised-button>Imprimer</button>
+            </p>
             <p class="float-right">
                 <button color="primary" type="submit" mat-raised-button
                     [disabled]="accountStatementForm.invalid">Valider</button>

@@ -2,6 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import * as es6printJS from "print-js";
+
 import { ITransaction } from '../../models/transaction';
 import { TransactionService } from '../..//services/transaction/transaction.service';
 import { handleFormError } from '../..//shared/common-error';
@@ -27,6 +29,12 @@ export class AccountStatementComponent implements OnInit, OnDestroy {
       startDate: ['', Validators.required],
       endDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required]
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.accountStatement$) {
+      this.accountStatement$.unsubscribe();
+    }
   }
 
   handleFormError(form: FormGroup, field: string): boolean {
@@ -56,9 +64,22 @@ export class AccountStatementComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.accountStatement$) {
-      this.accountStatement$.unsubscribe();
+  printAccountStatement(): void {
+    const formValue = this.accountStatementForm.value;
+
+    if (formValue && this.transactionsAccountStatement) {
+      const jsonArray = this.transactionsAccountStatement.map(transaction => ({...transaction}));
+      jsonArray.forEach((transaction: any) => {
+        transaction.amount = transaction.amount + ' €';
+        transaction.balance = transaction.balance + ' €';
+        transaction.date = this.datePipe.transform(transaction.date, 'dd/MM/yyyy');
+      });
+      es6printJS({
+        printable: jsonArray,
+        type: 'json',
+        properties: ['date', 'operation', 'wording', 'amount', 'balance'],
+        header: '<h3 class="custom-h3">My account statement from ' + this.datePipe.transform(formValue.startDate, 'dd/MM/yyyy') + ' to ' + this.datePipe.transform(formValue.endDate, 'dd/MM/yyyy') + '</h3>'
+      })
     }
   }
 }
