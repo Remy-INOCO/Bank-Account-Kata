@@ -2,7 +2,8 @@ import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, View
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ITransaction } from 'src/app/models/transaction';
+
+import { ITransaction } from '../../models/transaction';
 
 @Component({
   selector: 'kata-transaction-table-view',

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { ITransaction, TransactionResolved } from '../../models/transaction';
+
+import { ITransaction } from '../../models/transaction';
 
 @Component({
   selector: 'kata-transaction-history',
@@ -19,10 +17,10 @@ export class TransactionHistoryComponent implements OnInit {
   ngOnInit(): void {
     const transactionResolved = this.route.snapshot.data.transactionsHistory;
 
-    this.transactionsHistory = transactionResolved.transactions;
-
-    if (!this.transactionsHistory) {
-      this.errorMessage = transactionResolved.errorMessage ? transactionResolved.errorMessage : 'Error when call transaction history ';
+    if (transactionResolved && Array.isArray(transactionResolved) && transactionResolved.length !== 0) {
+      this.transactionsHistory = transactionResolved;
+    } else if (transactionResolved.statusCode === 500) {
+      this.errorMessage = transactionResolved.message;
     }
   }
 }

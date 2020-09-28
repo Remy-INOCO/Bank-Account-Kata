@@ -17,7 +17,8 @@ export class HandleTransactionComponent implements OnInit, OnDestroy {
   currentUser: IUser;
   errorMessage = {
     transaction: '',
-    amountAboveBalance: true
+    amountAboveBalance: true,
+    server: ''
   };
   operations: string[] = [];
   transactionForm: FormGroup;
@@ -56,6 +57,7 @@ export class HandleTransactionComponent implements OnInit, OnDestroy {
   submit(): void {
     this.errorMessage.amountAboveBalance = true;
     this.errorMessage.transaction = '';
+    this.errorMessage.server = '';
 
     if (this.transactionForm.valid) {
       const formValue: ITransaction = this.transactionForm.value;
@@ -87,6 +89,12 @@ export class HandleTransactionComponent implements OnInit, OnDestroy {
         this.userService.setCurrentUser(this.currentUser);
       } else {
         this.errorMessage.transaction = 'false';
+      }
+    }, error => {
+      if (error.statusCode === 400 || error.statusCode === 401) {
+        this.errorMessage.server = error.message;
+      } else if (error.statusText) {
+        this.errorMessage.server = error.statusText + '. Try again later.';
       }
     });
   }

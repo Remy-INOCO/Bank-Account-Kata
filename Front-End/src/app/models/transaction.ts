@@ -9,8 +9,3 @@ export interface ITransaction {
     amount: number;
     balance?: number;
 }
-
-export interface TransactionResolved {
-    transactions: ITransaction[];
-    errorMessage?: string;
-}

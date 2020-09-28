@@ -5,6 +5,7 @@ Base de données :
 Back End :
 	✔ Bean User @done(20-09-23 12:12)
 	✔ Bean Transaction @done(20-09-23 23:01)
+	✔ Handle errors @done(20-09-28 16:45)
 	Faire un dépôt param (userId, amount) :
 		✔ Récupérer l'id de l'utilisateur @done(20-09-23 23:02)
 		✔ Ajouter le montant indiqué au solde @done(20-09-23 23:02)
@@ -26,6 +27,7 @@ Back End :
 Front End :
 	✔ Interface IUser @done(20-09-23 12:12)
 	✔ Interface ITransaction @done(20-09-23 23:02)
+	✔ Handle errors @done(20-09-28 16:46)
 	Page initiale :
 		✔ Interface de connexion @done(20-09-23 12:12)
 		✔ Utilisation d'un service pour stocker les informations du client + mise en session @done(20-09-23 23:04)
@@ -39,16 +41,14 @@ Front End :
 			✔ Historique de mes opérations @done(20-09-28 01:55)
 
 		Page transaction :
-			Si retrait :
-				✔ Visualiser montant actuel @done(20-09-28 01:57)
+			✔ Visualiser montant actuel @done(20-09-28 01:57)
 			Formulaire :
 				✔ Libellé @done(20-09-28 01:57)
 				✔ Montant @done(20-09-28 01:57)
-			☐ CanDeactivate
 			
 		Page Relevé de compte :
 			✔ Afficher date, montant et solde @done(20-09-28 01:56)
-			☐ Imprimer (print-js)
+			✔ Imprimer (print-js) @done(20-09-28 16:45)
 
 		Page Historique des opérations :
 			✔ Visualisation sous forme de table @done(20-09-28 01:56)

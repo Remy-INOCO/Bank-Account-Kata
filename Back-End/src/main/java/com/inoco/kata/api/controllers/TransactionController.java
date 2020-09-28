@@ -22,6 +22,9 @@ import com.inoco.kata.api.session.UserSession;
 import com.inoco.kata.api.shared.CustomLoggerUtils;
 import com.inoco.kata.api.shared.DateUtils;
 import com.inoco.kata.api.shared.UserUtils;
+import com.inoco.kata.api.shared.execption.CompareDateException;
+import com.inoco.kata.api.shared.execption.UnauthorizedActionException;
+import com.inoco.kata.api.shared.execption.UnauthorizedUserException;
 
 @RequestMapping("/transactions")
 @RestController
@@ -46,82 +49,84 @@ public class TransactionController {
 	}
 
 	@GetMapping("/history")
-	public List<Transaction> getTransactionsHistory() {
+	public List<Transaction> getTransactionsHistory() throws UnauthorizedUserException {
 		final User currentUser = this.getUserSession();
 
-		if (currentUser != null) {
-			LOGGER.info("{} check his transactions history", CustomLoggerUtils.userInfos(currentUser));
-			return this.transactionRepository.findAll().stream()
-					.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId()))
-					.collect(Collectors.toList());
-		}
-
-		return null;
+		LOGGER.info("{} check his transactions history", CustomLoggerUtils.userInfos(currentUser));
+		return this.transactionRepository.findAll().stream()
+				.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId()))
+				.collect(Collectors.toList());
 	}
 
 	@GetMapping("/accountStatement/{startDate}-{endDate}")
-	public List<Transaction> getAccountStatement(@PathVariable final Date startDate, @PathVariable final Date endDate) {
+	public List<Transaction> getAccountStatement(@PathVariable final Date startDate, @PathVariable final Date endDate)
+			throws UnauthorizedUserException, CompareDateException {
 		final User currentUser = this.getUserSession();
+
+		if (!startDate.before(endDate)) {
+			throw new CompareDateException();
+		}
+
 		startDate.setHours(0);
 		startDate.setMinutes(0);
 		endDate.setHours(23);
 		endDate.setMinutes(59);
-
-		if (currentUser != null && startDate.before(endDate)) {
-			LOGGER.info("{} consults his account statement for period {} to {}",
-					CustomLoggerUtils.userInfos(currentUser), startDate, endDate);
-			return this.transactionRepository.findAll().stream()
-					.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId())
-							&& DateUtils.compareDate(transaction.getDate(), startDate, endDate))
-					.collect(Collectors.toList());
-		}
-
-		return null;
+		LOGGER.info("{} consults his account statement for period {} to {}", CustomLoggerUtils.userInfos(currentUser),
+				startDate, endDate);
+		return this.transactionRepository.findAll().stream()
+				.filter(transaction -> UserUtils.checkUserId(transaction, currentUser.getId())
+						&& DateUtils.compareDate(transaction.getDate(), startDate, endDate))
+				.collect(Collectors.toList());
 	}
 
 	@PutMapping("/deposit")
-	public Transaction toMakeDeposit(@RequestBody final Transaction transaction) {
+	public Transaction toMakeDeposit(@RequestBody final Transaction transaction) throws UnauthorizedUserException {
 		final User currentUser = this.getUserSession();
 
-		if (currentUser != null) {
-			LOGGER.info("{} added {} € to his balance", CustomLoggerUtils.userInfos(currentUser),
-					transaction.getAmount());
-			final Integer balance = currentUser.getBalance() + transaction.getAmount();
-			currentUser.setBalance(balance);
-			transaction.setBalance(balance);
-			transaction.setDate(new Date());
-			transaction.setIdUser(currentUser.getId());
+		final Integer balance = currentUser.getBalance() + transaction.getAmount();
+		currentUser.setBalance(balance);
+		transaction.setBalance(balance);
+		transaction.setDate(new Date());
+		transaction.setIdUser(currentUser.getId());
 
-			this.userRepository.save(currentUser);
+		LOGGER.info("{} added {} € to his balance", CustomLoggerUtils.userInfos(currentUser), transaction.getAmount());
 
-			return this.transactionRepository.save(transaction);
-		}
+		this.userRepository.save(currentUser);
 
-		return null;
+		return this.transactionRepository.save(transaction);
 	}
 
 	@PutMapping("/withdrawal")
-	public Transaction toMakeWithdrawal(@RequestBody final Transaction transaction) {
+	public Transaction toMakeWithdrawal(@RequestBody final Transaction transaction)
+			throws UnauthorizedUserException, UnauthorizedActionException {
 		final User currentUser = this.getUserSession();
 
-		if (currentUser != null) {
-			LOGGER.info("{} deduct {} € from his balance", CustomLoggerUtils.userInfos(currentUser),
-					transaction.getAmount());
-			final Integer balance = currentUser.getBalance() - transaction.getAmount();
-			currentUser.setBalance(balance);
-			transaction.setBalance(balance);
-			transaction.setDate(new Date());
-			transaction.setIdUser(currentUser.getId());
+		final Integer balance = currentUser.getBalance() - transaction.getAmount();
 
-			this.userRepository.save(currentUser);
-
-			return this.transactionRepository.save(transaction);
+		if (balance < 0) {
+			throw new UnauthorizedActionException();
 		}
 
-		return null;
+		currentUser.setBalance(balance);
+		transaction.setBalance(balance);
+		transaction.setDate(new Date());
+		transaction.setIdUser(currentUser.getId());
+
+		LOGGER.info("{} deduct {} € from his balance", CustomLoggerUtils.userInfos(currentUser),
+				transaction.getAmount());
+
+		this.userRepository.save(currentUser);
+
+		return this.transactionRepository.save(transaction);
 	}
 
-	private User getUserSession() {
-		return this.userSession.getCurrentUser();
+	private User getUserSession() throws UnauthorizedUserException {
+		final User currentUser = this.userSession.getCurrentUser();
+
+		if (currentUser != null) {
+			return currentUser;
+		}
+
+		throw new UnauthorizedUserException();
 	}
 }

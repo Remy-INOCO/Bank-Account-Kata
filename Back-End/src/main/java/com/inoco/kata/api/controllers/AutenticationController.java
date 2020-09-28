@@ -14,6 +14,7 @@ import com.inoco.kata.api.model.User;
 import com.inoco.kata.api.repository.UserRepository;
 import com.inoco.kata.api.session.UserSession;
 import com.inoco.kata.api.shared.CustomLoggerUtils;
+import com.inoco.kata.api.shared.execption.UnauthorizedUserException;
 
 @RestController
 public class AutenticationController {
@@ -32,7 +33,7 @@ public class AutenticationController {
 	}
 
 	@PostMapping("/login")
-	public User login(@RequestBody final User userAuth) throws Exception {
+	public User login(@RequestBody final User userAuth) throws UnauthorizedUserException {
 		LOGGER.info("{} is trying to connect", CustomLoggerUtils.userInfos(userAuth));
 
 		final Optional<User> optionalUser = this.userRepository.findAll().stream()
@@ -47,7 +48,7 @@ public class AutenticationController {
 			return this.getUserSession();
 		}
 
-		return null;
+		throw new UnauthorizedUserException();
 	}
 
 	@GetMapping("/logout")

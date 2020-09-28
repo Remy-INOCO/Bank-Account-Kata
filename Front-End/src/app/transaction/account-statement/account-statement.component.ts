@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import * as es6printJS from "print-js";
+import * as es6printJS from 'print-js';
 
 import { ITransaction } from '../../models/transaction';
 import { TransactionService } from '../..//services/transaction/transaction.service';
@@ -60,6 +60,12 @@ export class AccountStatementComponent implements OnInit, OnDestroy {
             this.transactionsAccountStatement = [];
             this.errorMessage = 'No data could be recovered.';
           }
+        }, error => {
+          if (error.statusCode === 400 || error.statusCode === 401) {
+            this.errorMessage = error.message;
+          } else if (error.statusText) {
+            this.errorMessage = error.statusText + '. Try again later.';
+          }
         });
     }
   }
@@ -78,8 +84,9 @@ export class AccountStatementComponent implements OnInit, OnDestroy {
         printable: jsonArray,
         type: 'json',
         properties: ['date', 'operation', 'wording', 'amount', 'balance'],
-        header: '<h3 class="custom-h3">My account statement from ' + this.datePipe.transform(formValue.startDate, 'dd/MM/yyyy') + ' to ' + this.datePipe.transform(formValue.endDate, 'dd/MM/yyyy') + '</h3>'
-      })
+        header: '<h3 class="custom-h3">My account statement from ' + this.datePipe.transform(formValue.startDate, 'dd/MM/yyyy') +
+          ' to ' + this.datePipe.transform(formValue.endDate, 'dd/MM/yyyy') + '</h3>'
+      });
     }
   }
 }

@@ -40,6 +40,7 @@ body {
   background-color: white;
 }
 .error {
+  max-width: 300px;
   padding: 16px;
   color: white;
   background-color: red;

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+
 import { IUser } from '../models/user';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { UserService } from '../services/user/user.service';
@@ -12,7 +13,7 @@ import { UserService } from '../services/user/user.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  error: string;
+  errorMessage: string;
   form: FormGroup;
   authentication$: Subscription;
 
@@ -44,11 +45,16 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (user) {
           this.userService.setCurrentUser(user);
           this.router.navigate(['customer-area']);
-          this.error = '';
-        } else {
-          this.userService.setCurrentUser(null);
-          this.error = 'Les informations saisies ne figure pas dans nos données.';
-          this.form.controls.password.reset();
+          this.errorMessage = '';
+        }
+      }, (error: any) => {
+        this.userService.setCurrentUser(null);
+        this.form.controls.password.reset();
+
+        if (error.statusCode === 401) {
+          this.errorMessage = error.message + ' The information entered does not appear in our data.';
+        } else if (error.statusText) {
+          this.errorMessage = error.statusText + '. Try again later.';
         }
       });
     }
@@ -56,11 +62,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private clearUserIfExist(): void {
     if (this.userService.getCurrentUser()) {
-      this.authenticationService.logout().subscribe(isDisconnected => {
-        if (isDisconnected) {
-          this.userService.clearStorage();
-        }
-      });
+      this.authenticationService.logout().subscribe();
+      this.userService.clearStorage();
     }
   }
 

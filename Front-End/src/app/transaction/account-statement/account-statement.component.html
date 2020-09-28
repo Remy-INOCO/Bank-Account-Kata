@@ -24,7 +24,7 @@
             </div>
             <div *ngIf="!checkDate()"
                 class="error">
-                The start date can't be equal to or later than the end date.
+                The start date can't be later to or equal than the end date.
             </div>
             <br>
             <p class="float-left" *ngIf="accountStatementForm.valid && transactionsAccountStatement && transactionsAccountStatement.length !== 0">
@@ -40,4 +40,4 @@
 
 <kata-transaction-table-view *ngIf="transactionsAccountStatement" [transactions]="transactionsAccountStatement"></kata-transaction-table-view>
 
-<div *ngIf="errorMessage.length > 0" class="error">{{ errorMessage }}</div>
+<div *ngIf="errorMessage" class="error" style="max-width: none;">{{ errorMessage }}</div>
