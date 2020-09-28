@@ -62,6 +62,11 @@ public class TransactionController {
 	@GetMapping("/accountStatement/{startDate}-{endDate}")
 	public List<Transaction> getAccountStatement(@PathVariable final Date startDate, @PathVariable final Date endDate) {
 		final User currentUser = this.getUserSession();
+		startDate.setHours(0);
+		startDate.setMinutes(0);
+		endDate.setHours(23);
+		endDate.setMinutes(59);
+
 		if (currentUser != null && startDate.before(endDate)) {
 			LOGGER.info("{} consults his account statement for period {} to {}",
 					CustomLoggerUtils.userInfos(currentUser), startDate, endDate);
