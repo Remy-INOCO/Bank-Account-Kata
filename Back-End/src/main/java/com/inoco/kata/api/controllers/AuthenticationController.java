@@ -17,17 +17,14 @@ import com.inoco.kata.api.shared.CustomLoggerUtils;
 import com.inoco.kata.api.shared.execption.UnauthorizedUserException;
 
 @RestController
-public class AutenticationController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AutenticationController.class);
+public class AuthenticationController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 
-	@Autowired
 	private final UserRepository userRepository;
 
-	@Autowired
 	private final UserSession userSession;
 
-	@Autowired
-	public AutenticationController(final UserRepository userRepository, final UserSession userSession) {
+	public AuthenticationController(final UserRepository userRepository, final UserSession userSession) {
 		this.userRepository = userRepository;
 		this.userSession = userSession;
 	}
