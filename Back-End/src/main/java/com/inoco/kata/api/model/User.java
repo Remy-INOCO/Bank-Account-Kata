@@ -3,6 +3,7 @@ package com.inoco.kata.api.model;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ public class User {
 	private Integer balance;
 	private String password;
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
 	private List<Transaction> transactionList;
 
 	public User() {
