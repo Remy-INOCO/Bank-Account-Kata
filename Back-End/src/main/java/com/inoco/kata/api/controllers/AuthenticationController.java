@@ -1,7 +1,5 @@
 package com.inoco.kata.api.controllers;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.inoco.kata.api.model.User;
+import com.inoco.kata.api.model.dto.AuthenticationDto;
+import com.inoco.kata.api.model.dto.UserDto;
 import com.inoco.kata.api.service.UserService;
 import com.inoco.kata.api.session.UserSession;
 import com.inoco.kata.api.shared.CustomLoggerUtils;
@@ -29,18 +28,15 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/login")
-	public User login(@RequestBody final User userAuth) throws UnauthorizedUserException {
-		LOGGER.info("{} is trying to connect", CustomLoggerUtils.userInfos(userAuth));
+	public UserDto login(@RequestBody final AuthenticationDto userAuth) throws UnauthorizedUserException {
+		LOGGER.info("User {} {} is trying to connect", userAuth.getFirstName(), userAuth.getLastName().toUpperCase());
 
-		final Optional<User> optionalUser = this.userService.getConnectedUser(userAuth);
+		final UserDto currentUser = this.userService.getConnectedUser(userAuth);
 
-		if (optionalUser.isPresent()) {
-			final User currentUser = optionalUser.get();
-			this.userSession.setCurrentUser(currentUser);
-
+		if (currentUser != null) {
 			LOGGER.info("{} is connected", CustomLoggerUtils.userInfos(currentUser));
-
-			return this.getUserSession();
+			this.userSession.setCurrentUser(currentUser);
+			return currentUser;
 		}
 
 		throw new UnauthorizedUserException();
@@ -48,7 +44,7 @@ public class AuthenticationController {
 
 	@GetMapping("/logout")
 	public boolean logout() {
-		final User currentUser = this.getUserSession();
+		final UserDto currentUser = this.userSession.getCurrentUser();
 
 		if (currentUser != null) {
 			LOGGER.info("{} is deconnected", CustomLoggerUtils.userInfos(currentUser));
@@ -57,9 +53,5 @@ public class AuthenticationController {
 		}
 
 		return false;
-	}
-
-	private User getUserSession() {
-		return this.userSession.getCurrentUser();
 	}
 }

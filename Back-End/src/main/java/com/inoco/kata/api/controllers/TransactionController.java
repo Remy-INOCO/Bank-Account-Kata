@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inoco.kata.api.model.Transaction;
-import com.inoco.kata.api.model.User;
+import com.inoco.kata.api.model.dto.TransactionDto;
+import com.inoco.kata.api.model.dto.UserDto;
 import com.inoco.kata.api.service.TransactionService;
 import com.inoco.kata.api.service.UserService;
 import com.inoco.kata.api.session.UserSession;
@@ -41,17 +42,17 @@ public class TransactionController {
 	}
 
 	@GetMapping("/history")
-	public List<Transaction> getTransactionsHistory() throws UnauthorizedUserException {
-		final User currentUser = this.getUserSession();
+	public List<TransactionDto> getTransactionsHistory() throws UnauthorizedUserException {
+		final UserDto currentUser = this.getUserSession();
 
 		LOGGER.info("{} check his transactions history", CustomLoggerUtils.userInfos(currentUser));
 		return this.transactionService.getTransactionsHistory(currentUser);
 	}
 
 	@GetMapping("/accountStatement/{startDate}-{endDate}")
-	public List<Transaction> getAccountStatements(@PathVariable final Date startDate, @PathVariable final Date endDate)
-			throws UnauthorizedUserException, CompareDateException {
-		final User currentUser = this.getUserSession();
+	public List<TransactionDto> getAccountStatements(@PathVariable final Date startDate,
+			@PathVariable final Date endDate) throws UnauthorizedUserException, CompareDateException {
+		final UserDto currentUser = this.getUserSession();
 
 		if (!startDate.before(endDate)) {
 			throw new CompareDateException();
@@ -68,8 +69,8 @@ public class TransactionController {
 	}
 
 	@PutMapping("/deposit")
-	public Transaction toMakeDeposit(@RequestBody final Transaction transaction) throws UnauthorizedUserException {
-		final User currentUser = this.getUserSession();
+	public Transaction toMakeDeposit(@RequestBody final TransactionDto transaction) throws UnauthorizedUserException {
+		final UserDto currentUser = this.getUserSession();
 
 		final Integer balance = currentUser.getBalance() + transaction.getAmount();
 		currentUser.setBalance(balance);
@@ -79,15 +80,15 @@ public class TransactionController {
 
 		LOGGER.info("{} added {} € to his balance", CustomLoggerUtils.userInfos(currentUser), transaction.getAmount());
 
-		this.userService.saveUser(currentUser);
+		this.userService.save(currentUser);
 
-		return this.transactionService.saveTransaction(transaction);
+		return this.transactionService.save(transaction);
 	}
 
 	@PutMapping("/withdrawal")
-	public Transaction toMakeWithdrawal(@RequestBody final Transaction transaction)
+	public Transaction toMakeWithdrawal(@RequestBody final TransactionDto transaction)
 			throws UnauthorizedUserException, UnauthorizedActionException {
-		final User currentUser = this.getUserSession();
+		final UserDto currentUser = this.getUserSession();
 
 		final Integer balance = currentUser.getBalance() - transaction.getAmount();
 
@@ -103,13 +104,13 @@ public class TransactionController {
 		LOGGER.info("{} deduct {} € from his balance", CustomLoggerUtils.userInfos(currentUser),
 				transaction.getAmount());
 
-		this.userService.saveUser(currentUser);
+		this.userService.save(currentUser);
 
-		return this.transactionService.saveTransaction(transaction);
+		return this.transactionService.save(transaction);
 	}
 
-	private User getUserSession() throws UnauthorizedUserException {
-		final User currentUser = this.userSession.getCurrentUser();
+	private UserDto getUserSession() throws UnauthorizedUserException {
+		final UserDto currentUser = this.userSession.getCurrentUser();
 
 		if (currentUser != null) {
 			return currentUser;
