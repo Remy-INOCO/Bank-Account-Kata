@@ -1,0 +1,62 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet author="@author" id="01-USER-DATA">
+        <insert tableName="User">
+            <column name="id" value="1"></column>
+            <column name="first_name" value="Bilbon"></column>
+            <column name="last_name" value="Sacquet"></column>
+            <column name="balance" value="1500"></column>
+            <column name="password" value="Test123"></column>
+        </insert>
+        <insert tableName="User">
+            <column name="id" value="2"></column>
+            <column name="first_name" value="Frodon"></column>
+            <column name="last_name" value="Sacquet"></column>
+            <column name="balance" value="2000"></column>
+            <column name="password" value="Test123"></column>
+        </insert>
+        <insert tableName="User">
+            <column name="id" value="3"></column>
+            <column name="first_name" value="Sam"></column>
+            <column name="last_name" value="Gamegie"></column>
+            <column name="balance" value="2500"></column>
+            <column name="password" value="Test123"></column>
+        </insert>
+
+    </changeSet>
+
+
+    <changeSet author="@author" id="02-TRANSACTION-DATA" dbms="h2">
+        <insert tableName="Transaction">
+            <column name="id_user" value="1"></column>
+            <column name="operation" value="DEPOSIT"></column>
+            <column name="wording" value="Premier versement"></column>
+            <column name="date" value="now()"></column>
+            <column name="amount" value="1000"></column>
+            <column name="balance" value="1500"></column>
+        </insert>
+        <insert tableName="Transaction">
+            <column name="id_user" value="2"></column>
+            <column name="operation" value="DEPOSIT"></column>
+            <column name="wording" value="Premier versement"></column>
+            <column name="date" value="now()"></column>
+            <column name="amount" value="1000"></column>
+            <column name="balance" value="2000"></column>
+        </insert>
+        <insert tableName="Transaction">
+            <column name="id_user" value="3"></column>
+            <column name="operation" value="DEPOSIT"></column>
+            <column name="wording" value="Premier versement"></column>
+            <column name="date" value="now()"></column>
+            <column name="amount" value="1000"></column>
+            <column name="balance" value="2500"></column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
+
