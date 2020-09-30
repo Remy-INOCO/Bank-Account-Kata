@@ -2,26 +2,21 @@ package com.inoco.kata.api.session;
 
 import org.springframework.stereotype.Component;
 
-import com.inoco.kata.api.model.User;
+import com.inoco.kata.api.model.dto.UserDto;
 
 @Component
 public class UserSession {
-	private User currentUser;
+	private UserDto currentUser;
 
 	public UserSession() {
 		super();
 	}
 
-	public UserSession(final User currentUser) {
-		super();
-		this.currentUser = currentUser;
-	}
-
-	public User getCurrentUser() {
+	public UserDto getCurrentUser() {
 		return this.currentUser;
 	}
 
-	public void setCurrentUser(final User currentUser) {
-		this.currentUser = currentUser;
+	public void setCurrentUser(final UserDto user) {
+		this.currentUser = user;
 	}
 }

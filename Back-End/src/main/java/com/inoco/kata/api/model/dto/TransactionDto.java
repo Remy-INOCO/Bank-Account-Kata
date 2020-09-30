@@ -1,29 +1,23 @@
-package com.inoco.kata.api.model;
+package com.inoco.kata.api.model.dto;
 
 import java.util.Date;
 
-import javax.persistence.*;
+import com.inoco.kata.api.model.Operation;
 
-@Entity
-public class Transaction {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TransactionDto {
 	private Long id;
 	private Long idUser;
-
-	@Enumerated(EnumType.STRING)
 	private Operation operation;
-
 	private String wording;
 	private Date date;
 	private int amount;
 	private int balance;
 
-	public Transaction() {
+	public TransactionDto() {
 		super();
 	}
 
-	public Transaction(final Long idUser, final Operation operation, final String wording, final Date date,
+	public TransactionDto(final Long idUser, final Operation operation, final String wording, final Date date,
 			final int amount, final int balance) {
 		super();
 		this.idUser = idUser;
