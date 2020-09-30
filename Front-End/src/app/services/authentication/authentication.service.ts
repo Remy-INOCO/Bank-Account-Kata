@@ -24,7 +24,6 @@ export class AuthenticationService {
     return this.http.post<IUser>(shared.apiUrl + 'login', currentUser).pipe(
       map((user: IUser) => {
         user.id = null;
-        user.password = '';
         return user;
       }),
       catchError(this.error.handleError<IErrorMessage>('login'))
