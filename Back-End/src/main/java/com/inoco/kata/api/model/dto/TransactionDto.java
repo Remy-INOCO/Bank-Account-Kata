@@ -6,7 +6,7 @@ import com.inoco.kata.api.model.Operation;
 
 public class TransactionDto {
 	private Long id;
-	private Long idUser;
+	private Long userId;
 	private Operation operation;
 	private String wording;
 	private Date date;
@@ -17,10 +17,10 @@ public class TransactionDto {
 		super();
 	}
 
-	public TransactionDto(final Long idUser, final Operation operation, final String wording, final Date date,
+	public TransactionDto(final Long userId, final Operation operation, final String wording, final Date date,
 			final int amount, final int balance) {
 		super();
-		this.idUser = idUser;
+		this.userId = userId;
 		this.operation = operation;
 		this.wording = wording;
 		this.date = date;
@@ -36,12 +36,12 @@ public class TransactionDto {
 		this.id = id;
 	}
 
-	public Long getIdUser() {
-		return this.idUser;
+	public Long getUserId() {
+		return this.userId;
 	}
 
-	public void setIdUser(final Long idUser) {
-		this.idUser = idUser;
+	public void setUserId(final Long userId) {
+		this.userId = userId;
 	}
 
 	public Operation getOperation() {
@@ -86,7 +86,7 @@ public class TransactionDto {
 
 	@Override
 	public String toString() {
-		return "Transaction{" + "id=" + this.id + ", idUser=" + this.idUser + ", operation='" + this.operation + '\''
+		return "Transaction{" + "id=" + this.id + ", userId=" + this.userId + ", operation='" + this.operation + '\''
 				+ ", wording='" + this.wording + '\'' + ", date='" + this.date + '\'' + ", amount='" + this.amount
 				+ '\'' + ", balance=" + this.balance + '}';
 	}
