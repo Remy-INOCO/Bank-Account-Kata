@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.inoco.kata.api.model.Transaction;
+import com.inoco.kata.api.model.User;
 import com.inoco.kata.api.model.dto.TransactionDto;
-import com.inoco.kata.api.model.dto.UserDto;
 import com.inoco.kata.api.repository.TransactionRepository;
 import com.inoco.kata.api.session.UserSession;
 import com.inoco.kata.api.shared.CustomLoggerUtils;
@@ -45,7 +45,7 @@ public class TransactionService {
 	}
 
 	public List<TransactionDto> getTransactionsHistory() throws UnauthorizedUserException {
-		final UserDto currentUser = this.getUserSession();
+		final User currentUser = this.getUserSession();
 		LOGGER.info("{} check his transactions history", CustomLoggerUtils.userInfos(currentUser));
 
 		final List<Transaction> transactionList = this
@@ -57,7 +57,7 @@ public class TransactionService {
 
 	public List<TransactionDto> getAccountStatements(final Date startDate, final Date endDate)
 			throws CompareDateException, UnauthorizedUserException {
-		final UserDto currentUser = this.getUserSession();
+		final User currentUser = this.getUserSession();
 
 		if (!startDate.before(endDate)) {
 			throw new CompareDateException();
@@ -79,7 +79,7 @@ public class TransactionService {
 	}
 
 	public Transaction toMakeDeposit(final TransactionDto transaction) throws UnauthorizedUserException {
-		final UserDto currentUser = this.getUserSession();
+		final User currentUser = this.getUserSession();
 		final Integer balance = currentUser.getBalance() + transaction.getAmount();
 
 		currentUser.setBalance(balance);
@@ -96,7 +96,7 @@ public class TransactionService {
 
 	public Transaction toMakeWithdrawal(final TransactionDto transaction)
 			throws UnauthorizedUserException, UnauthorizedActionException {
-		final UserDto currentUser = this.getUserSession();
+		final User currentUser = this.getUserSession();
 
 		final Integer balance = currentUser.getBalance() - transaction.getAmount();
 
@@ -125,8 +125,8 @@ public class TransactionService {
 		return transaction.getUserId().equals(userId);
 	}
 
-	private UserDto getUserSession() throws UnauthorizedUserException {
-		final UserDto currentUser = this.userSession.getCurrentUser();
+	private User getUserSession() throws UnauthorizedUserException {
+		final User currentUser = this.userSession.getCurrentUser();
 
 		if (currentUser != null) {
 			return currentUser;

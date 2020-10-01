@@ -1,22 +1,27 @@
 package com.inoco.kata.api.session;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.inoco.kata.api.model.dto.UserDto;
+import com.inoco.kata.api.model.User;
 
 @Component
 public class UserSession {
-	private UserDto currentUser;
+	private User currentUser;
+
+	@Autowired
+	private ModelMapper modelMapper;
 
 	public UserSession() {
 		super();
 	}
 
-	public UserDto getCurrentUser() {
+	public User getCurrentUser() {
 		return this.currentUser;
 	}
 
-	public void setCurrentUser(final UserDto user) {
+	public void setCurrentUser(final User user) {
 		this.currentUser = user;
 	}
 }

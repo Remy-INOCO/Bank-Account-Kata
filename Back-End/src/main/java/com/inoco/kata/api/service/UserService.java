@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.inoco.kata.api.model.User;
-import com.inoco.kata.api.model.dto.UserDto;
 import com.inoco.kata.api.repository.UserRepository;
-import com.inoco.kata.api.session.UserSession;
 
 @Service
 public class UserService {
@@ -16,11 +14,11 @@ public class UserService {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public UserService(final UserRepository userRepository, final UserSession userSession) {
+	public UserService(final UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
-	public User save(final UserDto user) {
-		return this.userRepository.save(this.modelMapper.map(user, User.class));
+	public User save(final User user) {
+		return this.userRepository.save(user);
 	}
 }

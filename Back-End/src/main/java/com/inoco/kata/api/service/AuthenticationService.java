@@ -37,18 +37,18 @@ public class AuthenticationService {
 				.filter(user -> this.checkUser(user, userAuth)).findFirst();
 
 		if (optionalUser.isPresent()) {
-			final UserDto currentUser = this.modelMapper.map(optionalUser.get(), UserDto.class);
+			final User currentUser = optionalUser.get();
 
 			LOGGER.info("{} is connected", CustomLoggerUtils.userInfos(currentUser));
 			this.userSession.setCurrentUser(currentUser);
-			return currentUser;
+			return this.modelMapper.map(currentUser, UserDto.class);
 		}
 
 		throw new UnauthorizedUserException();
 	}
 
 	public boolean logout() {
-		final UserDto currentUser = this.userSession.getCurrentUser();
+		final User currentUser = this.userSession.getCurrentUser();
 
 		if (currentUser != null) {
 			LOGGER.info("{} is deconnected", CustomLoggerUtils.userInfos(currentUser));
