@@ -19,8 +19,8 @@
                 </mat-form-field>
             </p>
 
-            <p *ngIf="errorMessage" class="error">
-                {{ errorMessage }}
+            <p *ngIf="errorMessage.authentication" class="error">
+                {{ errorMessage.authentication }}
             </p>
 
             <div class="button">

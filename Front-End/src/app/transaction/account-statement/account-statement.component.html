@@ -40,4 +40,4 @@
 
 <kata-transaction-table-view *ngIf="transactionsAccountStatement" [transactions]="transactionsAccountStatement"></kata-transaction-table-view>
 
-<div *ngIf="errorMessage" class="error" style="max-width: none;">{{ errorMessage }}</div>
+<div *ngIf="errorMessage.authentication" class="error" style="max-width: none;">{{ errorMessage.authentication }}</div>

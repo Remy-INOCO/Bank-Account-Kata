@@ -1,12 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import * as es6printJS from 'print-js';
 
 import { ITransaction } from '../../models/transaction';
 import { TransactionService } from '../..//services/transaction/transaction.service';
 import { handleFormError } from '../..//shared/common-error';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IErrorMessage } from 'src/app/models/error-message';
 
 @Component({
   selector: 'kata-account-statement',
@@ -16,9 +18,11 @@ import { handleFormError } from '../..//shared/common-error';
 })
 export class AccountStatementComponent implements OnInit, OnDestroy {
   accountStatementForm: FormGroup;
-  accountStatement$: Subscription;
+  onDestroy$ = new Subject();
   transactionsAccountStatement: ITransaction[];
-  errorMessage = '';
+  errorMessage: IErrorMessage = {
+    authentication: ''
+  };
 
   constructor(private formBuilder: FormBuilder,
               private datePipe: DatePipe,
@@ -32,9 +36,8 @@ export class AccountStatementComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.accountStatement$) {
-      this.accountStatement$.unsubscribe();
-    }
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   handleFormError(form: FormGroup, field: string): boolean {
@@ -51,20 +54,23 @@ export class AccountStatementComponent implements OnInit, OnDestroy {
     const formValue = this.accountStatementForm.value;
 
     if (this.accountStatementForm.valid) {
-      this.accountStatement$ = this.transactionService.getAccountStatement(formValue.startDate, formValue.endDate)
+      this.transactionService.getAccountStatement(formValue.startDate, formValue.endDate)
+        .pipe(
+          takeUntil(this.onDestroy$)
+        )
         .subscribe(transactions => {
           if (transactions && transactions.length !== 0) {
             this.transactionsAccountStatement = transactions;
-            this.errorMessage = '';
+            this.errorMessage.authentication = '';
           } else {
             this.transactionsAccountStatement = [];
-            this.errorMessage = 'No data could be recovered.';
+            this.errorMessage.authentication = 'No data could be recovered.';
           }
         }, error => {
           if (error.statusCode === 400 || error.statusCode === 401) {
-            this.errorMessage = error.message;
+            this.errorMessage.authentication = error.message;
           } else if (error.statusText) {
-            this.errorMessage = error.statusText + '. Try again later.';
+            this.errorMessage.authentication = error.statusText + '. Try again later.';
           }
         });
     }

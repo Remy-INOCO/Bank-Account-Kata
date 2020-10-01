@@ -1,4 +1,4 @@
-<div *ngIf="errorMessage" class="error" style="max-width: none;">
-    {{ errorMessage }}
+<div *ngIf="errorMessage.transactionHistory" class="error" style="max-width: none;">
+    {{ errorMessage.transactionHistory }}
 </div>
 <kata-transaction-table-view *ngIf="transactionsHistory" [transactions]="transactionsHistory"></kata-transaction-table-view>

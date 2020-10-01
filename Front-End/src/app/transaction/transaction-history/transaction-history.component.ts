@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { IErrorMessage } from 'src/app/models/error-message';
 
 import { ITransaction } from '../../models/transaction';
 
@@ -9,7 +10,9 @@ import { ITransaction } from '../../models/transaction';
   styleUrls: ['./transaction-history.component.css']
 })
 export class TransactionHistoryComponent implements OnInit {
-  errorMessage = '';
+  errorMessage: IErrorMessage = {
+    transactionHistory: ''
+  };
   transactionsHistory: ITransaction[];
 
   constructor(private route: ActivatedRoute) { }

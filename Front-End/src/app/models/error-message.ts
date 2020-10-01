@@ -1,5 +1,6 @@
 export interface IErrorMessage {
-    statusCode: number;
-	timestamp: Date;
-	message: string;
+    transaction?: string;
+    authentication?: string;
+    transactionHistory: string;
+    serverResponse?: string;
 }

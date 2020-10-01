@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IErrorMessage } from '../models/error-message';
 
 import { IUser } from '../models/user';
 import { AuthenticationService } from '../services/authentication/authentication.service';
@@ -13,9 +15,11 @@ import { UserService } from '../services/user/user.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  errorMessage: string;
+  errorMessage: IErrorMessage = {
+    authentication: ''
+  };
   form: FormGroup;
-  authentication$: Subscription;
+  onDestroy$ = new Subject();
 
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
@@ -41,22 +45,25 @@ export class LoginComponent implements OnInit, OnDestroy {
         password: formValue.password
       };
 
-      this.authentication$ = this.authenticationService.login(userForm).subscribe((user: IUser) => {
-        if (user) {
-          this.userService.setCurrentUser(user);
-          this.router.navigate(['customer-area']);
-          this.errorMessage = '';
-        }
-      }, (error: any) => {
-        this.userService.setCurrentUser(null);
-        this.form.controls.password.reset();
+      this.authenticationService.login(userForm)
+        .pipe(
+          takeUntil(this.onDestroy$)
+        ).subscribe((user: IUser) => {
+          if (user) {
+            this.userService.setCurrentUser(user);
+            this.router.navigate(['customer-area']);
+            this.errorMessage.authentication = '';
+          }
+        }, (error: any) => {
+          this.userService.setCurrentUser(null);
+          this.form.controls.password.reset();
 
-        if (error.statusCode === 401) {
-          this.errorMessage = error.message + ' The information entered does not appear in our data.';
-        } else if (error.statusText) {
-          this.errorMessage = error.statusText + '. Try again later.';
-        }
-      });
+          if (error.statusCode === 401) {
+            this.errorMessage.authentication = error.message + ' The information entered does not appear in our data.';
+          } else if (error.statusText) {
+            this.errorMessage.authentication = error.statusText + '. Try again later.';
+          }
+        });
     }
   }
 
@@ -68,8 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.authentication$) {
-      this.authentication$.unsubscribe();
-    }
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }

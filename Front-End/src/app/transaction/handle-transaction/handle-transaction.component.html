@@ -43,6 +43,9 @@
                         Amount is required.
                     </div>
                 </div>
+                <div *ngIf="transactionForm.errors?.amountAboveBalanceInvalid" class="error">
+                    Your amount above your balance !
+                </div>
             </div>
             <br>
             <div *ngIf="errorMessage.transaction === 'true'" class="success">
@@ -51,11 +54,8 @@
             <div *ngIf="errorMessage.transaction === 'false'" class="error">
                 Error during transaction.
             </div>
-            <div *ngIf="!errorMessage.amountAboveBalance" class="error">
-                Your amount above your balance !
-            </div>
-            <div *ngIf="errorMessage.server" class="error">
-                {{ errorMessage.server }}
+            <div *ngIf="errorMessage.serverResponse" class="error">
+                {{ errorMessage.serverResponse }}
             </div>
             <p class="float-right">
                 <button color="primary" type="submit" mat-raised-button

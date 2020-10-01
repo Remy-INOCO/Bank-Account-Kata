@@ -8,7 +8,7 @@ import { IUser } from '../../models/user';
 import { shared } from '../../shared/index';
 import { HttpHandleError } from '../../shared/http-handle-error';
 import { UserService } from '../user/user.service';
-import { IErrorMessage } from '../../models/error-message';
+import { IServerErrorMessage } from '../../models/server-error-message';
 
 @Injectable({
   providedIn: 'root'
@@ -20,19 +20,19 @@ export class AuthenticationService {
               private router: Router,
               private userService: UserService) { }
 
-  login(currentUser: IUser): Observable<IUser | IErrorMessage> {
+  login(currentUser: IUser): Observable<IUser | IServerErrorMessage> {
     return this.http.post<IUser>(shared.apiUrl + 'login', currentUser).pipe(
       map((user: IUser) => {
         user.id = null;
         return user;
       }),
-      catchError(this.error.handleError<IErrorMessage>('login'))
+      catchError(this.error.handleError<IServerErrorMessage>('login'))
     );
   }
 
-  logout(): Observable<boolean | IErrorMessage> {
+  logout(): Observable<boolean | IServerErrorMessage> {
     return this.http.get<boolean>(shared.apiUrl + 'logout').pipe(
-      catchError(this.error.handleError<IErrorMessage>('logout'))
+      catchError(this.error.handleError<IServerErrorMessage>('logout'))
     );
   }
 

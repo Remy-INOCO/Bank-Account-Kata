@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { IErrorMessage } from '../../models/error-message';
+import { IServerErrorMessage } from '../../models/server-error-message';
 import { HttpHandleError } from '../../shared/http-handle-error';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LogoutResolver implements Resolve<boolean | IErrorMessage> {
+export class LogoutResolver implements Resolve<boolean | IServerErrorMessage> {
   private error = new HttpHandleError();
 
   constructor(private authenticationService: AuthenticationService,
