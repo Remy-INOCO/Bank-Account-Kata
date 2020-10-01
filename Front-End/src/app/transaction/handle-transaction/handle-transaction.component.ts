@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
+import { ITransactionError } from 'src/app/models/transaction-error';
 import { Operation } from '../../models/operation';
 import { ITransaction } from '../../models/transaction';
 import { IUser } from '../../models/user';
@@ -15,7 +16,7 @@ import { handleFormError } from '../../shared/common-error';
 })
 export class HandleTransactionComponent implements OnInit, OnDestroy {
   currentUser: IUser;
-  errorMessage = {
+  errorMessage: ITransactionError = {
     transaction: '',
     amountAboveBalance: true,
     server: ''
@@ -55,9 +56,11 @@ export class HandleTransactionComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    this.errorMessage.amountAboveBalance = true;
-    this.errorMessage.transaction = '';
-    this.errorMessage.server = '';
+    this.errorMessage = {
+      transaction: '',
+      amountAboveBalance: true,
+      server: ''
+    }
 
     if (this.transactionForm.valid) {
       const formValue: ITransaction = this.transactionForm.value;

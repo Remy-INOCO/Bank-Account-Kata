@@ -1,8 +1,7 @@
 import { Observable, of, throwError } from 'rxjs';
-import { IErrorMessage } from '../models/error-message';
 
 export class HttpHandleError {
-  handleError<T>(operation = 'operation', result?: T): any {
+  handleError<T>(operation = 'operation'): any {
     return (error: any): Observable<T> => {
 
       switch (error.error.statusCode) {
